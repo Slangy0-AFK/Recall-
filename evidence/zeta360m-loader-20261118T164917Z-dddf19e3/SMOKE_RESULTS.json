@@ -1,0 +1,33 @@
+{
+  "status": "BLOCKED",
+  "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+  "execution_settings": {
+    "device": "CPU",
+    "precision": "FP32",
+    "seed": 20261117,
+    "chunk_size": 64,
+    "sink_tokens": 64,
+    "recent_tokens": 64,
+    "maximum_retained_tokens": 128,
+    "requested_smoke_tokens": 32
+  },
+  "native_loader_implemented": false,
+  "all_checkpoint_tensors_mapped": false,
+  "checkpoint_weights_loaded": false,
+  "actual_zeta_components_in_checkpoint_model_path": false,
+  "actual_model_tokens_processed": 0,
+  "final_position": null,
+  "throughput_tokens_per_second": null,
+  "model_peak_rss_bytes": null,
+  "outputs_finite": null,
+  "smoke_test_passed": false,
+  "test_256_tokens": "NOT RUN",
+  "test_100k_tokens": "NOT RUN",
+  "blockers": [
+    "Pinned Zeta NonCollapsingAttention computes tau-scaled cosine attention and does not preserve the checkpoint's scaled raw-dot-product attention semantics.",
+    "Available memory was 3680.918 MiB, below the unchanged 6144 MiB safety gate by 2463.082 MiB.",
+    "The native loader and explicit checkpoint tensor mapping were not implemented after the required compatibility stop."
+  ],
+  "synthetic_component_tests_are_model_inference": false
+}

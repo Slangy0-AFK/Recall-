@@ -1,0 +1,46 @@
+{
+  "status": "SYNTHETIC_COMPONENTS_EXECUTED; CHECKPOINT_INFERENCE_NOT RUN",
+  "zeta_revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+  "zeta_version": "0.5.1",
+  "trace_scope": "Instrumented synthetic component probe; not a model execution trace.",
+  "component_invocations": {
+    "non_collapsing_attention_forward": 3,
+    "rotary_embedding": 1,
+    "streaming_kv_cache_append": 130,
+    "model_generation": 0
+  },
+  "expected_component_outcomes": {
+    "attention_calls_succeeded": 2,
+    "attention_calls_rejected_for_unexpanded_gqa": 1,
+    "attention_output_finite": true,
+    "llama_reference_output_finite": true,
+    "synthetic_attention_max_abs_difference": 0.33019307255744934,
+    "gqa_after_kv_repeat_shape": [
+      1,
+      15,
+      1,
+      64
+    ],
+    "gqa_after_kv_repeat_finite": true,
+    "rope_output_shape": [
+      1,
+      1,
+      1,
+      64
+    ],
+    "rope_output_finite": true,
+    "cache_output_shape": [
+      1,
+      5,
+      128,
+      64
+    ],
+    "cache_positions_after_130_appends": "0..63 and 66..129",
+    "cache_next_position": 130,
+    "cache_values_finite": true
+  },
+  "checkpoint_weights_loaded": false,
+  "checkpoint_model_forward_executed": false,
+  "model_tokens_processed": 0,
+  "final_model_position": null
+}

@@ -1083,7 +1083,8 @@ def _summary_markdown(result: dict[str, Any]) -> str:
             *_metadata_lines(result),
             "",
             f"**Qualification status:** {result['qualification_status']}  ",
-            f"**21.4398 tokens/s target:** NOT MEASURED (`target_reached={result['performance']['target_reached']}`)  ",
+            f"**{result['model_provenance']['target_throughput_tokens_per_second']} tokens/s target:** "
+            f"NOT MEASURED (`target_reached={result['performance']['target_reached']}`)  ",
             f"**Production readiness:** {result['production_readiness']}",
             "",
             "## Phase results",
@@ -1341,7 +1342,8 @@ def render_reports(result: dict[str, Any]) -> dict[str, str]:
                 "inference time; not calculable for this probe.",
                 "- Total end-to-end Recall harness elapsed time is recorded in "
                 "`results/RECALL_TEST_RESULTS.json`; it is not model inference time.",
-                "- 21.4398 tokens/s target: NOT MEASURED; achievement is unverified.",
+                f"- {result['model_provenance']['target_throughput_tokens_per_second']} "
+                "tokens/s target: NOT MEASURED; achievement is unverified.",
                 "- Comparability: not applicable. No inference run exists to compare for "
                 "model, tokenizer, workload, hardware, precision, or measurement method.",
             ],

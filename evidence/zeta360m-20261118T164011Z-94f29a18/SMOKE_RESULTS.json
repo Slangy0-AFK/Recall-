@@ -1,0 +1,44 @@
+{
+  "status": "BLOCKED",
+  "run_id": "recall-zeta360m-20261118T164011Z-94f29a18",
+  "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "model_revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+  "execution": {
+    "device": "CPU",
+    "precision": "FP32",
+    "seed": 20261117,
+    "chunk_size": 64,
+    "sink_cache_tokens": 64,
+    "recent_cache_tokens": 64,
+    "maximum_cache_tokens": 128,
+    "requested_smoke_tokens": 32,
+    "actual_tokens_processed": 0,
+    "final_absolute_position": null,
+    "weights_loaded": false,
+    "tokenizer_loaded": true,
+    "outputs_finite": null,
+    "throughput_tokens_per_second": null,
+    "peak_rss_bytes": null
+  },
+  "preflight": {
+    "available_memory_mib": 4124.762,
+    "required_available_memory_mib": 6144,
+    "passed": false,
+    "deficit_mib": 2019.238
+  },
+  "zeta_components": {
+    "attention_executed": false,
+    "rope_executed": false,
+    "cache_executed": false
+  },
+  "smoke_test_passed": false,
+  "test_256_tokens": {
+    "status": "NOT RUN",
+    "reason": "The 32-token prerequisite did not pass."
+  },
+  "test_100k_tokens": {
+    "status": "NOT RUN",
+    "reason": "Not requested for this qualification."
+  },
+  "blocker": "Current memory preflight failed. The listed 4-core/16-GB Codespace option was not activated because doing so may change billing and was not authorized."
+}

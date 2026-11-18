@@ -43,6 +43,7 @@ Point Recall at checkouts of the pinned repositories:
 export RECALL_ZETA_REPO=/path/to/zeta-scaling-toolkit
 export RECALL_MATHMESH_REPO=/path/to/mathmesh-governor
 export RECALL_STABILITY_REPO=/path/to/System-Stability-Toolkit
+export RECALL_RAG_REPO=/path/to/deterministic-rag-governor
 python recall_harness.py
 ```
 
@@ -114,6 +115,19 @@ than substitute plain Hugging Face inference. A completed 100,000-token
 workload is a total processed-token count, not 100,000 tokens of simultaneous
 attention or retained context.
 
+### 100,000-token preflight
+
+Run the safe suite above with all four pinned checkout variables configured.
+It is a qualification probe, not a 100,000-token runner. A long run remains
+blocked until a supported Zeta model runner is implemented and wired into
+Recall, a short real-model pilot verifies token counts, cache and resource
+use, and the long-workload orchestration and checkpoint validation exist.
+MathMesh and RAG also need configured, ready services and the required
+component-originated events correlated to the experiment ID. The current
+interfaces do not provide the complete shared event contract. Resource
+snapshots during a short probe alone cannot establish that a long run is safe.
+Do not overwrite historical evidence when running future experiments.
+
 Statuses are `PASS`, `FAIL`, `PARTIAL`, `BLOCKED`, `NOT TESTED`, and
 `NOT APPLICABLE`. A system check can pass while the overall integration remains
 blocked; missing evidence is never treated as success. A full integration
@@ -172,4 +186,7 @@ converted into success-shaped results.
 Each generated report records the experiment ID, timestamp, repository
 revisions, model provenance, workload/token count, runtime details, and status.
 The user-provided 10.7199 tokens/second reference is not treated as verified by
-Recall; 21.4398 tokens/second is a measurement target, not an assumed result.
+Recall. The configured target is 50 tokens/second, interpreted as measured
+throughput rather than a controllable intake rate; it is not an assumed result
+or a guarantee. Reports regenerated from older evidence retain that evidence's
+original target.

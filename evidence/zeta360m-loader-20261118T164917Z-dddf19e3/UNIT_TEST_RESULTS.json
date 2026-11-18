@@ -1,0 +1,48 @@
+{
+  "status": "PARTIAL",
+  "test_file": "tests/test_zeta_smollm2_compatibility.py",
+  "command": "python -m pytest -q tests/test_zeta_smollm2_compatibility.py",
+  "pytest_result": {
+    "passed": 4,
+    "failed": 0,
+    "duration_seconds": 2.21,
+    "process_peak_rss_bytes": 624066560
+  },
+  "test_execution_scope": "Synthetic tensors only; real Zeta 0.5.1 components from the pinned commit; no checkpoint tensor values loaded and no model tokens processed.",
+  "tests": [
+    {
+      "name": "attention_semantics_differ_from_llama_scaled_dot_product",
+      "status": "PASS",
+      "meaning": "Confirmed incompatibility; synthetic output max absolute difference was 0.3301930726."
+    },
+    {
+      "name": "gqa_requires_expanding_five_kv_heads_to_fifteen_query_heads",
+      "status": "PASS",
+      "meaning": "Unexpanded real Zeta call was rejected; explicit 3x KV head expansion produced finite [1, 15, 1, 64] output."
+    },
+    {
+      "name": "zeta_interleaved_rope_differs_from_llama_split_half_rope",
+      "status": "PASS",
+      "meaning": "Confirmed direct layout mismatch with base 100000; synthetic max absolute difference was 2.0065846561."
+    },
+    {
+      "name": "bounded_cache_preserves_sinks_and_recent_absolute_positions",
+      "status": "PASS",
+      "meaning": "Verified exact sink/recent positions, 128-entry capacity, tensor shapes, finiteness, and next absolute position."
+    }
+  ],
+  "checkpoint_metadata_only_validation": {
+    "status": "PASS",
+    "tensor_names_shapes_and_dtypes_validated": true,
+    "tensor_values_loaded": false,
+    "missing_or_unexpected_tensors": 0
+  },
+  "loader_mapping_and_weight_loading_tests": {
+    "status": "NOT RUN",
+    "reason": "No loader was implemented after the required Zeta attention compatibility check failed."
+  },
+  "actual_checkpoint_inference": {
+    "status": "NOT RUN",
+    "model_tokens_processed": 0
+  }
+}

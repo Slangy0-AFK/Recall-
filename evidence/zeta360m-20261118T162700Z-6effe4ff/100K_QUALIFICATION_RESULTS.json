@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "run_id": "recall-zeta360m-20261118T162700Z-6effe4ff",
+  "status": "BLOCKED",
+  "started_at": "2026-11-18T16:27:00Z",
+  "finished_at": "2026-11-18T16:29:35Z",
+  "starting_branch": "copilot/zeta-deeptrace-initial-setup",
+  "final_branch": "copilot/stack-qualification",
+  "starting_commit": "6effe4ff3fd7bf4cee44faa2fad521a31d71034a",
+  "branch_created_from_starting_commit": true,
+  "working_tree_changes_preserved": [
+    "README.md",
+    "config/experiment.json",
+    "recall_harness.py",
+    "tests/test_harness.py"
+  ],
+  "configuration": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "model_revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+    "precision": "CPU FP32",
+    "seed": 20261117,
+    "target_tokens": 100000,
+    "chunk_size": 64,
+    "sink_cache_tokens": 64,
+    "recent_cache_tokens": 64,
+    "maximum_retained_cache_tokens": 128,
+    "checkpoint_interval_tokens": 1000,
+    "recovery_enabled": true,
+    "maximum_runtime_seconds": 43200,
+    "throughput_target_tokens_per_second": 50
+  },
+  "blocking_gate": {
+    "reason": "Available memory did not meet the existing conservative model-load preflight gate.",
+    "observed_at": "2026-11-18T16:29:35Z",
+    "available_memory_bytes": 3587268608,
+    "available_memory_mib": 3421.1,
+    "required_preflight_bytes": 6442450944,
+    "required_preflight_mib": 6144,
+    "deficit_bytes": 2855182336,
+    "deficit_mib": 2722.9,
+    "preflight_value_is_measured_minimum": false,
+    "actual_native_runtime_minimum_measured": false,
+    "model_weights_loaded": false,
+    "model_assets_found_in_checked_local_cache": false
+  },
+  "stages": [
+    {
+      "name": "Smoke",
+      "target_tokens": 32,
+      "actual_tokens_processed": 0,
+      "status": "BLOCKED"
+    },
+    {
+      "name": "Short",
+      "target_tokens": 256,
+      "actual_tokens_processed": 0,
+      "status": "NOT RUN"
+    },
+    {
+      "name": "Functional",
+      "target_tokens": 1024,
+      "actual_tokens_processed": 0,
+      "status": "NOT RUN"
+    },
+    {
+      "name": "Extended",
+      "target_tokens": 4096,
+      "actual_tokens_processed": 0,
+      "status": "NOT RUN"
+    },
+    {
+      "name": "Long",
+      "target_tokens": 8192,
+      "actual_tokens_processed": 0,
+      "status": "NOT RUN"
+    },
+    {
+      "name": "Stress",
+      "target_tokens": 16384,
+      "actual_tokens_processed": 0,
+      "status": "NOT RUN"
+    }
+  ],
+  "inference": {
+    "launched": false,
+    "actual_tokens_processed": 0,
+    "final_absolute_position": null,
+    "throughput_tokens_per_second": null,
+    "wall_time_seconds": null,
+    "peak_rss_bytes": null
+  },
+  "checkpoint_recovery": {
+    "status": "NOT TESTED",
+    "checkpoints_created": 0,
+    "fresh_process_restore_tested": false
+  },
+  "integrations": {
+    "mathmesh": "NOT TESTED",
+    "system_stability_toolkit": "NOT TESTED",
+    "deterministic_rag_governor": "NOT TESTED",
+    "recall_coordination": "NOT TESTED"
+  },
+  "historical_evidence_sha256_at_start": [
+    {
+      "path": "deeptrace/results/DEEPTRACE_1K_RESULTS.json",
+      "sha256": "c0f7ef808a5298540d133722b005999a6d8bf339b583dc67e098c846c5af4b66"
+    },
+    {
+      "path": "deeptrace/results/DEEPTRACE_4K_RESULTS.json",
+      "sha256": "99417cab8b54b390bae6e3b4161202c16be58ec2f50234ddbc873a963c0cb4dc"
+    },
+    {
+      "path": "deeptrace/results/DEEPTRACE_TEST_SUMMARY.json",
+      "sha256": "303cb3ae25ce1919fd1327529d323d9da723378940f342be4e93a389ce83ff3d"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_four_system_events.jsonl",
+      "sha256": "61d3e872d07dfceaaf01a25b2daffbbb0325188117693a74d6dc3e8bf0fc5122"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_four_system_results.json",
+      "sha256": "4d616146ee17271b7d8040cdea46402edc7136c83e47908f150dfe201dfdfa46"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_mathmesh_telemetry.jsonl",
+      "sha256": "cda7c79ac0d4d247aef6d6968146bc132ae56104b2d85c6d3faf07fca17c88ed"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_rag_audit.jsonl",
+      "sha256": "34e27c4c69c5085f32788ee62548901cb6789ed73e79548897c3c0869f86c83a"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_rag_results.jsonl",
+      "sha256": "83b8d8f32126d268e4217822a187415d9c5b226ef990d3db7db822bbb99b2183"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_stability_telemetry.jsonl",
+      "sha256": "03f07044577d665b960080d2826906b2be1e81df92efff7323ec13a5e4c05545"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_EQUIPMENT_QUALIFICATION_REPORT.json",
+      "sha256": "217cba69c0febb6e12d39c805f1228ad78912250332a35c53d7c0dd5df02edf6"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_LIGHTWEIGHT_20261118_040236_results.json",
+      "sha256": "1e14534bbabff1b16af2ff3f6af3d9ab2b50b1d4f42815ecc988b326f1a8d211"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_LIGHTWEIGHT_20261118_040310_results.json",
+      "sha256": "d919f9514e47310a2d696b55ddb9f09570f591b08b61f1503008087700884a5b"
+    },
+    {
+      "path": "deeptrace/results/FOUR_SYSTEM_QUALIFICATION_20261118_035630_qualification_results.json",
+      "sha256": "1daffdb1e37a96104bf09aa7719d8c869e23ae076a09d681ba98b8cb013844e9"
+    },
+    {
+      "path": "reports/ENVIRONMENT_AND_DEPENDENCY_REPORT.md",
+      "sha256": "99f21da8f1094380c209397fc8f6ef72a36c620f300b1af7b0ade007e812725e"
+    },
+    {
+      "path": "reports/FAULT_ISOLATION_REPORT.md",
+      "sha256": "f6ebfd5564e07cd959324cef2eb1e0790716bc3e640bf5b0e9771e071efd25dc"
+    },
+    {
+      "path": "reports/FOUR_SYSTEM_INTEGRATION_REPORT.md",
+      "sha256": "0c5169b801346ac00fd5656cc6e43a3c881c2e595ab498bfc726a79d81867083"
+    },
+    {
+      "path": "reports/PERFORMANCE_COMPARISON.md",
+      "sha256": "a92b385f134d77a85017209bc8710ebd3117b417a1348084fb9579ef82a9d222"
+    },
+    {
+      "path": "reports/RECALL_TEST_RESULTS.md",
+      "sha256": "2d16805f7fded386a966bc4f0d3d1715174fc3f0c3c5c957e5971bd08ce77f18"
+    },
+    {
+      "path": "results/RECALL_TEST_RESULTS.json",
+      "sha256": "6a0e0f47d67b4d9d25ed0d3dc169f68b10d10d4f8751665a224362f6618c25e4"
+    }
+  ],
+  "commit_or_push": false
+}

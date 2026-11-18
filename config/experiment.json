@@ -16,7 +16,7 @@
     "historical_throughput_tokens_per_second": 10.7199,
     "historical_wall_seconds": 9636.7,
     "historical_checkpoints": "56/56 passed",
-    "target_throughput_tokens_per_second": 21.4398,
+    "target_throughput_tokens_per_second": 50.0,
     "historical_source": "User-provided reference; original evidence was not opened or modified"
   },
   "qualification_probe": {

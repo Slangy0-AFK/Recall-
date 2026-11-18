@@ -1,0 +1,36 @@
+{
+  "run_id": "recall-zeta360m-20261118T162700Z-6effe4ff",
+  "overall_status": "BLOCKED",
+  "integration_phase_started": false,
+  "actual_services_called": false,
+  "systems": {
+    "mathmesh_governor": {
+      "status": "NOT TESTED",
+      "live_connectivity": "NOT TESTED",
+      "audit_api": "NOT TESTED",
+      "telemetry_api": "NOT TESTED",
+      "reason": "The qualification stopped at the resource gate before integration checks."
+    },
+    "system_stability_toolkit": {
+      "status": "NOT TESTED",
+      "live_observation": "NOT TESTED",
+      "advisory_only_behavior": "NOT TESTED",
+      "inference_configuration_changes": "NOT TESTED",
+      "reason": "The qualification stopped at the resource gate before integration checks."
+    },
+    "deterministic_rag_governor": {
+      "status": "NOT TESTED",
+      "live_connectivity": "NOT TESTED",
+      "api_operations": "NOT TESTED",
+      "retrieval_context_supplied_to_inference": false,
+      "reason": "The qualification stopped at the resource gate before integration checks."
+    },
+    "recall": {
+      "status": "NOT TESTED",
+      "component_timestamps_and_execution_order": "NOT TESTED",
+      "checkpoint_creation_and_restoration": "NOT TESTED",
+      "parallel_execution_claimed": false,
+      "reason": "The qualification stopped at the resource gate before integration checks."
+    }
+  }
+}

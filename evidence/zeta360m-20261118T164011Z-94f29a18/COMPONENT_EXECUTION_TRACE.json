@@ -1,0 +1,27 @@
+{
+  "status": "BLOCKED",
+  "inference_started": false,
+  "model_loaded": false,
+  "tokenizer_loaded": true,
+  "tokenizer_load_is_inference": false,
+  "actual_model_tokens_processed": 0,
+  "final_absolute_position": null,
+  "events": [],
+  "component_calls": {
+    "zeta_attention": 0,
+    "zeta_rope": 0,
+    "zeta_kv_cache_append": 0,
+    "zeta_token_generation": 0
+  },
+  "component_execution": {
+    "zeta_attention": false,
+    "zeta_rope": false,
+    "zeta_bounded_kv_cache": false,
+    "model_generation": false
+  },
+  "zeta_package_installed": false,
+  "zeta_package_version_expected": "0.5.1",
+  "zeta_repository_revision_inspected": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+  "source_inspection_is_execution": false,
+  "reason": "The 4,124.762 MiB available-memory snapshot failed the retained 6,144 MiB preflight gate. The available 16 GB machine type was not activated because no paid-resource authorization was provided."
+}

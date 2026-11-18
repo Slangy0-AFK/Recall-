@@ -1,0 +1,44 @@
+{
+  "status": "BLOCKED",
+  "captured_at": "2026-11-18T16:48:55Z",
+  "platform": "Linux Codespaces",
+  "machine": {
+    "type": "basicLinux32gb",
+    "cores": 2,
+    "memory_bytes": 8328056832,
+    "disk_bytes": 33636024320
+  },
+  "memory": {
+    "available_bytes": 3859722240,
+    "available_mib": 3680.918,
+    "swap_total_bytes": 0,
+    "cgroup_limit": "max",
+    "cgroup_limit_bytes": null,
+    "cgroup_current_bytes": 3709497344,
+    "required_available_bytes": 6442450944,
+    "required_available_mib": 6144,
+    "preflight_passed": false,
+    "preflight_deficit_bytes": 2582728704,
+    "preflight_deficit_mib": 2463.082
+  },
+  "cpu": {
+    "model": "AMD EPYC 7763 64-Core Processor",
+    "cgroup_cpu_quota": "max 100000",
+    "effective_cpu_set": "0-1"
+  },
+  "disk": {
+    "available_bytes": 7263662080,
+    "available_mib": 6927.168
+  },
+  "synthetic_test_process_peak_rss_bytes": 624066560,
+  "model_resource_measurements": {
+    "model_loading_peak_rss_bytes": null,
+    "weight_conversion_peak_rss_bytes": null,
+    "first_forward_peak_rss_bytes": null,
+    "token_generation_peak_rss_bytes": null,
+    "cache_update_peak_rss_bytes": null,
+    "status": "NOT MEASURED: no model load or inference was attempted"
+  },
+  "checkpoint_weight_values_loaded": false,
+  "model_inference_started": false
+}

@@ -1,0 +1,15 @@
+{
+  "run_id": "recall-zeta360m-20261118T162700Z-6effe4ff",
+  "status": "BLOCKED",
+  "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "model_revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+  "tokenizer_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "tokenizer_revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+  "precision_requested": "CPU FP32",
+  "weights_loaded": false,
+  "tokenizer_loaded": false,
+  "local_model_assets_found": false,
+  "architecture_verified_from_current_run_assets": false,
+  "asset_sha256": {},
+  "reason": "The pinned weights were not found in the checked local Hugging Face cache and the resource preflight gate failed before loading."
+}

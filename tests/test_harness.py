@@ -115,6 +115,12 @@ class ReportShapeTests(unittest.TestCase):
             "- Pinned model weights cached locally: True",
             documents["PERFORMANCE_COMPARISON.md"],
         )
+        self.assertIn("21.4398 tokens/s target", documents["PERFORMANCE_COMPARISON.md"])
+        result["model_provenance"]["target_throughput_tokens_per_second"] = 50.0
+        documents = render_reports(result)
+        self.assertIn("50.0 tokens/s target", documents["RECALL_TEST_RESULTS.md"])
+        self.assertIn("50.0 tokens/s target", documents["PERFORMANCE_COMPARISON.md"])
+        self.assertNotIn("21.4398 tokens/s target", documents["PERFORMANCE_COMPARISON.md"])
 
     def test_evidence_validator_rejects_mismatched_experiment_ids(self) -> None:
         result = {

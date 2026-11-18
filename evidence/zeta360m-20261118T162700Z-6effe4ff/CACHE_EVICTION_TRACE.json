@@ -1,0 +1,20 @@
+{
+  "run_id": "recall-zeta360m-20261118T162700Z-6effe4ff",
+  "status": "BLOCKED",
+  "configuration": {
+    "sink_tokens": 64,
+    "recent_tokens": 64,
+    "maximum_retained_tokens": 128,
+    "chunk_size": 64
+  },
+  "cache_instantiated": false,
+  "tokens_processed": 0,
+  "final_absolute_position": null,
+  "maximum_retained_tokens_observed": 0,
+  "eviction_count": 0,
+  "evictions": [],
+  "sink_retention_verified": false,
+  "recent_retention_verified": false,
+  "absolute_rope_positions_verified_after_eviction": false,
+  "reason": "No cache was instantiated because inference did not start."
+}

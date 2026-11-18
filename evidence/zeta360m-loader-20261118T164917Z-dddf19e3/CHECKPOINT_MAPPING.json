@@ -1,0 +1,129 @@
+{
+  "status": "BLOCKED",
+  "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+  "checkpoint_path": "/home/codespace/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-360M-Instruct/snapshots/a10cc1512eabd3dde888204e902eca88bddb4951/model.safetensors",
+  "checkpoint_header_validation": {
+    "status": "PASS",
+    "tensor_values_loaded": false,
+    "tensor_count": 290,
+    "expected_schema_tensor_count": 290,
+    "missing_tensor_count": 0,
+    "unexpected_tensor_count": 0,
+    "shape_error_count": 0,
+    "dtype_error_count": 0,
+    "parameter_count": 361821120,
+    "storage_dtype": "BF16"
+  },
+  "native_tensor_mapping": {
+    "status": "NOT IMPLEMENTED",
+    "every_required_tensor_mapped": false,
+    "mapped_tensor_count": 0,
+    "unmapped_tensor_count": 290,
+    "reason": "Stopped before loader implementation because pinned Zeta attention changes the checkpoint's scaled-dot-product attention semantics."
+  },
+  "recognized_schema": {
+    "top_level_tensors": [
+      {
+        "name": "model.embed_tokens.weight",
+        "shape": [
+          49152,
+          960
+        ],
+        "dtype": "BF16",
+        "native_mapping_implemented": false
+      },
+      {
+        "name": "model.norm.weight",
+        "shape": [
+          960
+        ],
+        "dtype": "BF16",
+        "native_mapping_implemented": false
+      }
+    ],
+    "per_layer_tensor_patterns": [
+      {
+        "name_suffix": "self_attn.q_proj.weight",
+        "shape": [
+          960,
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "self_attn.k_proj.weight",
+        "shape": [
+          320,
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "self_attn.v_proj.weight",
+        "shape": [
+          320,
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "self_attn.o_proj.weight",
+        "shape": [
+          960,
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "mlp.gate_proj.weight",
+        "shape": [
+          2560,
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "mlp.up_proj.weight",
+        "shape": [
+          2560,
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "mlp.down_proj.weight",
+        "shape": [
+          960,
+          2560
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "input_layernorm.weight",
+        "shape": [
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      },
+      {
+        "name_suffix": "post_attention_layernorm.weight",
+        "shape": [
+          960
+        ],
+        "layers": 32,
+        "native_mapping_implemented": false
+      }
+    ],
+    "tied_lm_head_weight_present": false,
+    "config_ties_word_embeddings": true
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "status": "BLOCKED",
+  "captured_at": "2026-11-18T16:38:20Z",
+  "platform": "Linux Codespaces",
+  "codespace": {
+    "machine_name": "basicLinux32gb",
+    "display_name": "2 cores, 8 GB RAM, 32 GB storage",
+    "state": "Available",
+    "available_codespaces_found": 1,
+    "larger_machine_option": {
+      "machine_name": "standardLinux32gb",
+      "display_name": "4 cores, 16 GB RAM, 32 GB storage",
+      "provisioned": false,
+      "changed": false
+    }
+  },
+  "memory": {
+    "total_bytes": 8328056832,
+    "total_mib": 7942.254,
+    "available_bytes": 4325126144,
+    "available_mib": 4124.762,
+    "swap_total_bytes": 0,
+    "cgroup_memory_limit": "max",
+    "cgroup_memory_limit_bytes": null,
+    "cgroup_memory_current_bytes": 3521794048,
+    "preflight_required_bytes": 6442450944,
+    "preflight_required_mib": 6144,
+    "preflight_passed": false,
+    "preflight_deficit_bytes": 2117324800,
+    "preflight_deficit_mib": 2019.238
+  },
+  "cpu": {
+    "available_logical_cpus": 2,
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "cgroup_cpu_quota": "max 100000",
+    "cgroup_effective_cpu_set": "0-1"
+  },
+  "disk": {
+    "filesystem_total_bytes": 33636024320,
+    "filesystem_free_bytes": 7271460864,
+    "filesystem_free_gib": 6.772
+  },
+  "inference_phase_measurements": {
+    "model_loading": {
+      "status": "NOT RUN: preflight blocked",
+      "peak_rss_bytes": null
+    },
+    "weight_conversion": {
+      "status": "NOT RUN: preflight blocked",
+      "peak_rss_bytes": null
+    },
+    "first_forward_pass": {
+      "status": "NOT RUN: preflight blocked",
+      "peak_rss_bytes": null
+    },
+    "token_generation": {
+      "status": "NOT RUN: preflight blocked",
+      "peak_rss_bytes": null
+    },
+    "cache_updates": {
+      "status": "NOT RUN: preflight blocked",
+      "peak_rss_bytes": null
+    }
+  },
+  "model_peak_rss_bytes": null,
+  "model_peak_rss_status": "NOT MEASURED"
+}

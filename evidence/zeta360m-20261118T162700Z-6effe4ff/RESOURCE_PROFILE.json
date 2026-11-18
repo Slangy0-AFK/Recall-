@@ -1,0 +1,27 @@
+{
+  "run_id": "recall-zeta360m-20261118T162700Z-6effe4ff",
+  "timestamp": "2026-11-18T16:29:35Z",
+  "status": "BLOCKED",
+  "platform": "Linux",
+  "available_memory_bytes": 3587268608,
+  "available_memory_mib": 3421.1,
+  "total_memory_bytes": 8328056832,
+  "available_cpus": 2,
+  "swap_total_bytes": 0,
+  "disk_free_bytes": 7272230912,
+  "preflight": {
+    "required_available_bytes": 6442450944,
+    "required_available_mib": 6144,
+    "passed": false,
+    "deficit_bytes": 2855182336,
+    "deficit_mib": 2722.9,
+    "threshold_kind": "existing conservative model-load gate",
+    "measured_native_minimum": false
+  },
+  "model_runtime_measurements": {
+    "weights_loaded": false,
+    "peak_rss_bytes": null,
+    "actual_minimum_memory_bytes": null,
+    "status": "NOT MEASURED"
+  }
+}
