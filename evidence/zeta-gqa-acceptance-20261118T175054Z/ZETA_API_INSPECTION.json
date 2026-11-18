@@ -1,0 +1,72 @@
+{
+  "attention_apis": {
+    "module_inventory": {
+      "classes": [
+        "NonCollapsingAttention",
+        "AsymptoticLRScheduler"
+      ],
+      "gqa_specific_implementation_found": false
+    },
+    "non_collapsing_attention": {
+      "causal_support": "attn_mask/visibility_mask arguments; boolean True means visible/allowed; no dedicated is_causal argument",
+      "class": "NonCollapsingAttention",
+      "constructor_signature": "(d_k: int, A_attn: float = 1.0, tau0: float = 10.0, tau_max: float = 50.0, tau_min: float = 1.0, check_finite: bool = False, length_scaling: Literal['none', 'log'] = 'none', train_length: int | None = None, tau_eff_max: float = 200.0)",
+      "forward_signature": "(self, q: torch.Tensor, k: torch.Tensor, v: torch.Tensor, attn_mask: torch.Tensor | None = None, *, visibility_mask: torch.Tensor | None = None) -> torch.Tensor",
+      "gqa_specific_exports": [],
+      "gqa_symbol_search_in_source": "none",
+      "grouped_query_heads_direct": false,
+      "import_path": "zeta_scaling_toolkit.NonCollapsingAttention",
+      "input_layout": "[..., query_or_key_sequence, d_k]; head axes are leading batch dimensions",
+      "learned_temperature": "bounded self.tau used for cosine logits",
+      "normalizes_q_and_k": "_unit(q.to(dtype)) and _unit(k.to(dtype)) in forward",
+      "source": "/usr/local/python/3.14.2/lib/python3.14/site-packages/zeta_scaling_toolkit/core.py",
+      "source_locations": {
+        "class": "zeta_scaling_toolkit/core.py:56",
+        "constructor": "NonCollapsingAttention.__init__ at core.py:78",
+        "cosine_temperature_path": "core.py:236-277",
+        "forward": "NonCollapsingAttention.forward at core.py:148",
+        "public_exports": "zeta_scaling_toolkit/__init__.py:1-21",
+        "qk_unit_normalization": "core.py:200-201"
+      },
+      "source_method": "NonCollapsingAttention.forward",
+      "standard_scaled_dot_product": false,
+      "supported_head_dimension": "d_k is constructor-selected; forward requires Q/K last dimension equal d_k; 64 accepted"
+    },
+    "public_exports": [
+      "NonCollapsingAttention"
+    ]
+  },
+  "checkpoint_tensor_values_loaded": false,
+  "dependency": {
+    "direct_url": {
+      "url": "https://github.com/Slangy0-AFK/zeta-scaling-toolkit.git",
+      "vcs_info": {
+        "commit_id": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+        "requested_revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+        "vcs": "git"
+      }
+    },
+    "distribution": "zeta-scaling-toolkit",
+    "expected_commit": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+    "expected_version": "0.5.1",
+    "module": "zeta_scaling_toolkit",
+    "module_path": "/usr/local/python/3.14.2/lib/python3.14/site-packages/zeta_scaling_toolkit/__init__.py",
+    "pinned_commit_matches": true,
+    "pinned_version_matches": true,
+    "source_files": [
+      "__init__.py",
+      "core.py",
+      "positions.py"
+    ],
+    "source_root": "/usr/local/python/3.14.2/lib/python3.14/site-packages/zeta_scaling_toolkit",
+    "version": "0.5.1"
+  },
+  "inference_run": false,
+  "model_or_tokenizer_loaded": false,
+  "recorded_at_utc": "2026-11-18T17:54:01.758642+00:00",
+  "repository": {
+    "branch": "copilot/stack-qualification",
+    "head": "072f6ebdf7952bc65a9eb6908cde935175eb4959",
+    "root": "/workspaces/Recall-"
+  }
+}

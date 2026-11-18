@@ -1,0 +1,70 @@
+{
+  "contract": {
+    "causal_masking": "PASS when a lower-triangular boolean attn_mask is supplied (True means visible/allowed)",
+    "device": "CPU",
+    "dtype": "FP32",
+    "finite_gradients": true,
+    "finite_outputs": true,
+    "grouping": "3 query heads per KV head",
+    "head_dimension": 64,
+    "hidden_dimension": 960,
+    "kv_heads": 5,
+    "output_dimensions": {
+      "candidate_internal": [
+        2,
+        15,
+        4,
+        64
+      ],
+      "expected": [
+        2,
+        4,
+        960
+      ],
+      "flattened": [
+        2,
+        4,
+        960
+      ],
+      "status": "PASS after explicit KV head expansion and head concatenation"
+    },
+    "query_heads": 15,
+    "raw_qk_dot_products": "FAIL: source normalizes Q and K before logits",
+    "scaled_scores_1_over_sqrt_d": "FAIL: source uses bounded learned tau over cosine similarity"
+  },
+  "decision": "FAIL",
+  "decision_reason": "The only exported attention implementation tested rejects native 15:5 GQA shapes and, after explicit KV expansion, fails standard scaled-dot-product numerical equivalence.",
+  "observations": {
+    "candidate_causal_prefix_invariance": true,
+    "checkpoint_layout_direct_call_output_shape": [
+      2,
+      4,
+      15,
+      64
+    ],
+    "checkpoint_layout_direct_call_semantics": "Shape coincides, but Zeta interprets the penultimate axis as sequence; this call attends across the 15/5 head axes independently at each original sequence position.",
+    "comparison_atol": 1e-05,
+    "comparison_rtol": 0.0001,
+    "expanded_candidate_output_shape": [
+      2,
+      4,
+      960
+    ],
+    "explicit_kv_expansion_factor": 3,
+    "maximum_absolute_error": 0.48790717124938965,
+    "mean_absolute_error": 0.04079721122980118,
+    "native_gqa_call_rejected": true,
+    "native_gqa_error": "q, k, and v batch dimensions must be broadcastable",
+    "numerically_equivalent_to_reference": false
+  },
+  "recorded_at_utc": "2026-11-18T17:54:01.758642+00:00",
+  "safety": {
+    "checkpoint_values_read_or_loaded": false,
+    "inference_run": false,
+    "memory_gate_changed": false,
+    "memory_gate_mib": 6144,
+    "model_loaded": false,
+    "synthetic_tensors_only": true,
+    "tokenizer_loaded": false
+  }
+}

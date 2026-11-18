@@ -1,0 +1,47 @@
+{
+  "status": "NO_NATIVE_MODEL_COMPONENT_EXECUTION",
+  "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "model_revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+  "zeta_revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+  "model_weights_loaded": false,
+  "model_tokens_processed": 0,
+  "native_inference": {
+    "stage_a_started": false,
+    "stage_b_started": false,
+    "attention_invocations": 0,
+    "rope_invocations": 0,
+    "cache_invocations": 0,
+    "output_finiteness_checked_on_model_activations": false,
+    "cache_state_checked_on_model_activations": false
+  },
+  "regression_test_scope": {
+    "synthetic_tensor_tests_ran": true,
+    "pinned_zeta_compatibility_tests_passed": 4,
+    "checkpoint_tensor_values_used": false,
+    "model_tokens_processed": 0,
+    "inference_counters_include_synthetic_calls": false,
+    "notes": "Synthetic component tests are regression evidence only; they are not model inference or checkpoint activation traces."
+  },
+  "compatibility_findings": {
+    "attention": {
+      "status": "INCOMPATIBLE",
+      "zeta_semantics": "L2-normalized Q/K and tau-scaled cosine logits",
+      "checkpoint_semantics": "softmax(Q K^T / sqrt(64)) V"
+    },
+    "rope": {
+      "status": "INCOMPATIBLE",
+      "zeta_layout": "interleaved",
+      "checkpoint_layout": "split-half"
+    },
+    "grouped_query_attention": {
+      "status": "SHAPE_ADAPTATION_REQUIRED",
+      "query_heads": 15,
+      "key_value_heads": 5,
+      "kv_repetition_factor": 3
+    },
+    "runner": {
+      "status": "NOT IMPLEMENTED",
+      "supported_adapter_operation": "component_probe only"
+    }
+  }
+}

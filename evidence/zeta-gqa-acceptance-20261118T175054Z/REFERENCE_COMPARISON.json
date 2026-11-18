@@ -1,0 +1,66 @@
+{
+  "causal_masking": "Future K/V perturbations do not affect earlier reference outputs",
+  "causal_prefix_invariance_verified": true,
+  "finite_output": true,
+  "group_mapping_query_head_to_kv_head": [
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    4,
+    4,
+    4
+  ],
+  "grouping_3_to_1_verified": true,
+  "implementation": "Independent PyTorch matmul, explicit K/V repeat_interleave, 1/sqrt(64) scaling, triangular causal mask, softmax",
+  "input_shapes": {
+    "key": [
+      2,
+      4,
+      5,
+      64
+    ],
+    "query": [
+      2,
+      4,
+      15,
+      64
+    ],
+    "value": [
+      2,
+      4,
+      5,
+      64
+    ]
+  },
+  "model_or_checkpoint_used": false,
+  "output_shape": [
+    2,
+    4,
+    960
+  ],
+  "output_shape_expected": [
+    2,
+    4,
+    960
+  ],
+  "reference_uses_zeta_attention": false,
+  "status": "PASS",
+  "zeta_candidate": {
+    "allclose_at_tolerance": false,
+    "maximum_absolute_error": 0.48790717124938965,
+    "mean_absolute_error": 0.04079721122980118,
+    "tolerance": {
+      "atol": 1e-05,
+      "rtol": 0.0001
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "status": "PASS_NON_INFERENCE_CHECKS",
+  "recorded_at_utc": "2026-11-18T17:12:08Z",
+  "scope": "Pinned-Zeta compatibility and synthetic mathematical checks only.",
+  "safety": {
+    "model_loaded": false,
+    "tokenizer_loaded": false,
+    "checkpoint_tensor_values_read": false,
+    "checkpoint_tensor_values_loaded": false,
+    "model_forward_run": false,
+    "inference_run": false,
+    "tokens_processed": 0,
+    "memory_gate_mib": 6144,
+    "memory_gate_changed": false
+  },
+  "checkpoint_inspection": {
+    "status": "PASS_METADATA_ONLY",
+    "source": "Pinned config.json and model.safetensors header at revision a10cc1512eabd3dde888204e902eca88bddb4951",
+    "config_read": true,
+    "safetensors_header_read": true,
+    "tensor_values_accessed": false,
+    "tensor_count": 290,
+    "parameter_count": 361821120,
+    "dtype_set": ["BF16"],
+    "expected_schema": "2 global tensors plus 9 tensors per layer for 32 layers",
+    "schema_consistent": true
+  },
+  "existing_compatibility_test": {
+    "command": "python -m pytest -q tests/test_zeta_smollm2_compatibility.py",
+    "status": "PASS",
+    "passed": 4,
+    "failed": 0,
+    "duration_seconds": 3.57,
+    "cases": [
+      {
+        "name": "attention_semantics_differ_from_llama_scaled_dot_product",
+        "status": "PASS",
+        "interpretation": "Confirmed pinned Zeta attention is not the checkpoint scaled raw-dot-product operation."
+      },
+      {
+        "name": "gqa_requires_expanding_five_kv_heads_to_fifteen_query_heads",
+        "status": "PASS",
+        "interpretation": "Unexpanded synthetic GQA shapes are rejected; repeating KV heads satisfies shape only."
+      },
+      {
+        "name": "zeta_interleaved_rope_differs_from_llama_split_half_rope",
+        "status": "PASS",
+        "interpretation": "Confirmed direct RoPE layout mismatch at base 100000."
+      },
+      {
+        "name": "bounded_cache_preserves_sinks_and_recent_absolute_positions",
+        "status": "PASS",
+        "interpretation": "Confirmed synthetic append shape, bounded eviction, sink preservation, and absolute positions."
+      }
+    ]
+  },
+  "additional_synthetic_math_checks": [
+    {
+      "name": "split_half_to_interleaved_rope_permutation",
+      "status": "PASS",
+      "shape": [2, 5, 7, 64],
+      "base": 100000,
+      "dtype": "float64",
+      "max_absolute_error": 0.0,
+      "positions_dtype": "int64",
+      "meaning": "Applying the same per-head coordinate permutation to Q/K makes pinned Zeta RoPE equal the split-half reference for the synthetic inputs."
+    },
+    {
+      "name": "bf16_to_fp32_value_widening",
+      "status": "PASS",
+      "meaning": "Synthetic BF16 values widen exactly to their represented FP32 values; no checkpoint values were used."
+    }
+  ],
+  "resource_estimates_only": {
+    "fp32_parameter_bytes": 1447284480,
+    "fp32_parameter_mib": 1380.238037109375,
+    "batch_one_fp32_kv_cache_bytes_at_8192": 671088640,
+    "batch_one_fp32_kv_cache_mib_at_8192": 640.0,
+    "peak_memory_measured": false,
+    "threshold_mib": 6144
+  },
+  "existing_evidence_integrity": {
+    "100k_experiment_checksums": "PASS",
+    "previous_loader_compatibility_checksums": "PASS",
+    "latest_blocked_qualification_checksums": "PASS",
+    "existing_evidence_modified": false
+  }
+}

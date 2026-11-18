@@ -1,0 +1,28 @@
+{
+  "adapter_initialization": {
+    "package_path": "/usr/local/python/3.14.2/lib/python3.14/site-packages/zeta_scaling_toolkit/__init__.py",
+    "package_version": "0.5.1",
+    "repository_commit": null,
+    "status": "PASS",
+    "timestamp": "2026-11-18T17:54:02.069904+00:00"
+  },
+  "can_invoke_compatible_gqa": false,
+  "capabilities": {
+    "attention": "zeta_scaling_toolkit.NonCollapsingAttention",
+    "cache_metadata": "absolute positions and next_position",
+    "kv_cache": "zeta_scaling_toolkit.StreamingKVCache",
+    "model_runner": "NOT EXPOSED",
+    "numerical_validation": "finite output and shape checks",
+    "tokenizer": "NOT EXPOSED"
+  },
+  "inference_run": false,
+  "memory_gate_changed": false,
+  "memory_gate_mib": 6144,
+  "model_loaded": false,
+  "model_runner_exposed": "NOT EXPOSED",
+  "reason": "The adapter invokes NonCollapsingAttention with identical Q/K/V head_count and does not expose a GQA-specific operation or standard scaled-dot-product semantics.",
+  "recall_adapter_import": "PASS",
+  "recorded_at_utc": "2026-11-18T17:54:01.758642+00:00",
+  "tokenizer_exposed": "NOT EXPOSED",
+  "tokenizer_loaded": false
+}

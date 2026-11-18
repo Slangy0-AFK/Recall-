@@ -1,0 +1,65 @@
+{
+  "status": "PASS_WITH_SKIPS",
+  "documented_command": "python recall_harness.py --safe-suite --output-dir evidence/native-qualification-20261118T170033Z-072f6eb --no-write",
+  "test_execution": {
+    "unittest": {
+      "command": "unittest discovery invoked by --safe-suite",
+      "discovered": 29,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 5
+    },
+    "pytest": {
+      "command": "pytest -q deeptrace/tests",
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    "combined": {
+      "passed": 51,
+      "failed": 0,
+      "skipped": 5
+    }
+  },
+  "skipped_unittest_cases": [
+    {
+      "test": "tests.test_adapters.RealAdapterTests.test_mathmesh_published_numeric_operation",
+      "reason": "RECALL_MATHMESH_REPO is not configured"
+    },
+    {
+      "test": "tests.test_adapters.RealAdapterTests.test_stability_toolkit_documented_json_cli",
+      "reason": "RECALL_STABILITY_REPO is not configured"
+    },
+    {
+      "test": "tests.test_adapters.RealAdapterTests.test_zeta_published_attention_and_cache_apis",
+      "reason": "RECALL_ZETA_REPO is not configured"
+    },
+    {
+      "test": "tests.test_fault_isolation.FaultIsolationTests.test_unavailable_rag_isolated_from_real_local_probes",
+      "reason": "Source checkouts required for real adapter probes are not configured"
+    },
+    {
+      "test": "tests.test_integration.IntegrationPrerequisiteTests.test_optional_read_only_service_health_endpoints",
+      "reason": "Read-only MathMesh and RAG health endpoints are not both configured"
+    }
+  ],
+  "synthetic_zeta_compatibility_tests": {
+    "passed": 4,
+    "failed": 0,
+    "scope": "Synthetic inputs to pinned Zeta components. The tests verify mismatch and cache behavior, not checkpoint inference."
+  },
+  "command_outcome": {
+    "exit_code": 1,
+    "reason": "After test runners succeeded, the harness returned BLOCKED for incomplete overall integration qualification.",
+    "test_runner_failures": 0
+  },
+  "historical_evidence_checksum_verification": {
+    "before_tests": "PASS",
+    "after_tests": "PASS",
+    "historical_directories": [
+      "evidence/zeta360m-20261118T162700Z-6effe4ff",
+      "evidence/zeta360m-20261118T164011Z-94f29a18",
+      "evidence/zeta360m-loader-20261118T164917Z-dddf19e3"
+    ]
+  }
+}

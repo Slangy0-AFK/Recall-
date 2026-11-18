@@ -1,0 +1,56 @@
+{
+  "status": "INFERENCE_CACHE_NOT_RUN",
+  "requested_configuration": {
+    "sink_tokens": 64,
+    "recent_tokens": 64,
+    "maximum_retained_tokens": 128
+  },
+  "stage_a": {
+    "status": "NOT RUN",
+    "cache_invocations": 0,
+    "eviction_order": null,
+    "retained_dimensions": null
+  },
+  "stage_b": {
+    "status": "NOT RUN",
+    "cache_invocations": 0,
+    "eviction_order": null,
+    "retained_dimensions": null
+  },
+  "synthetic_regression": {
+    "status": "PASS",
+    "test": "bounded_cache_preserves_sinks_and_recent_absolute_positions",
+    "configuration": {
+      "window_recent_tokens": 64,
+      "sink_tokens": 64,
+      "capacity": 128,
+      "batch_size": 1,
+      "kv_heads": 5,
+      "head_dimension": 64
+    },
+    "after_130_synthetic_appends": {
+      "retained_positions": [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+        30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43,
+        44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57,
+        58, 59, 60, 61, 62, 63, 66, 67, 68, 69, 70, 71, 72, 73,
+        74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87,
+        88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101,
+        102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113,
+        114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125,
+        126, 127, 128, 129
+      ],
+      "evicted_positions": [64, 65],
+      "retained_entry_count": 128,
+      "key_shape": [1, 5, 128, 64],
+      "value_shape": [1, 5, 128, 64],
+      "next_position": 130
+    },
+    "after_one_more_synthetic_append": {
+      "next_position": 131,
+      "last_retained_position": 130
+    },
+    "provenance": "Synthetic tensors in a regression test; not model activations and not Stage B qualification."
+  }
+}

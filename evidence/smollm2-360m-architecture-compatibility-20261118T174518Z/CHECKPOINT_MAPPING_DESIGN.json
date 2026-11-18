@@ -1,0 +1,167 @@
+{
+  "status": "DESIGN_ONLY_NOT_IMPLEMENTED",
+  "checkpoint": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+    "config_path": "/home/codespace/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-360M-Instruct/snapshots/a10cc1512eabd3dde888204e902eca88bddb4951/config.json",
+    "weights_path": "/home/codespace/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-360M-Instruct/snapshots/a10cc1512eabd3dde888204e902eca88bddb4951/model.safetensors",
+    "metadata_inspected": true,
+    "inspection_method": "safetensors header only; names, shapes, and dtypes; no tensor values read",
+    "tensor_count": 290,
+    "parameter_count": 361821120,
+    "dtype": "BF16",
+    "layers": 32,
+    "hidden_size": 960,
+    "intermediate_size": 2560,
+    "query_heads": 15,
+    "kv_heads": 5,
+    "head_dim": 64,
+    "vocab_size": 49152,
+    "tie_word_embeddings": true
+  },
+  "mapping_policy": {
+    "weights_orientation": "safetensors linear matrices are [out_features,in_features]; use torch.nn.functional.linear convention",
+    "future_execution_dtype": "FP32 CPU",
+    "bf16_to_fp32": "Convert each loaded BF16 tensor to FP32. This is an exact widening of the already-quantized stored values, not recovery of original pre-BF16 values.",
+    "load_gate": "Do not load any tensor values until the Zeta attention semantics change is available and the existing 6144 MiB available-memory gate passes.",
+    "mapping_status": "No checkpoint tensor values were loaded or mapped in this investigation."
+  },
+  "global_tensors": [
+    {
+      "checkpoint_name": "model.embed_tokens.weight",
+      "shape": [49152, 960],
+      "dtype": "BF16",
+      "target": "Recall LlamaModel.token_embedding.weight",
+      "mapping": "Direct",
+      "status": "PROPOSED"
+    },
+    {
+      "checkpoint_name": "model.norm.weight",
+      "shape": [960],
+      "dtype": "BF16",
+      "target": "Recall LlamaModel.final_rms_norm.weight",
+      "mapping": "Direct; epsilon from config is 1e-5",
+      "status": "PROPOSED"
+    }
+  ],
+  "per_layer_tensor_patterns": [
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.self_attn.q_proj.weight",
+      "shape": [960, 960],
+      "dtype": "BF16",
+      "target": "q_proj.weight",
+      "runtime_shape": "[B,15,S,64]",
+      "transformation": "Linear projection then reshape. Apply within-head split-half-to-interleaved coordinate permutation before Zeta RoPE if retaining Zeta's RoPE primitive.",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.self_attn.k_proj.weight",
+      "shape": [320, 960],
+      "dtype": "BF16",
+      "target": "k_proj.weight",
+      "runtime_shape": "[B,5,S,64]",
+      "transformation": "Linear projection then reshape. Apply the same within-head coordinate permutation as Q before RoPE.",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.self_attn.v_proj.weight",
+      "shape": [320, 960],
+      "dtype": "BF16",
+      "target": "v_proj.weight",
+      "runtime_shape": "[B,5,S,64]",
+      "transformation": "Linear projection then reshape. Do not apply RoPE or Q/K coordinate permutation to V.",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.self_attn.o_proj.weight",
+      "shape": [960, 960],
+      "dtype": "BF16",
+      "target": "o_proj.weight",
+      "runtime_shape": "Attention output [B,S,960]",
+      "transformation": "Direct linear projection after concatenating the 15 query-head outputs.",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.mlp.gate_proj.weight",
+      "shape": [2560, 960],
+      "dtype": "BF16",
+      "target": "mlp.gate_proj.weight",
+      "runtime_shape": "[B,S,2560]",
+      "transformation": "Linear projection; apply SiLU before elementwise multiplication with up_proj output.",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.mlp.up_proj.weight",
+      "shape": [2560, 960],
+      "dtype": "BF16",
+      "target": "mlp.up_proj.weight",
+      "runtime_shape": "[B,S,2560]",
+      "transformation": "Linear projection; multiply elementwise with SiLU(gate_proj(x)).",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.mlp.down_proj.weight",
+      "shape": [960, 2560],
+      "dtype": "BF16",
+      "target": "mlp.down_proj.weight",
+      "runtime_shape": "[B,S,960]",
+      "transformation": "Linear projection from the SwiGLU intermediate dimension.",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.input_layernorm.weight",
+      "shape": [960],
+      "dtype": "BF16",
+      "target": "input_layernorm.weight",
+      "runtime_shape": "[960]",
+      "transformation": "RMSNorm affine scale; epsilon=1e-5 from config; no bias tensor.",
+      "status": "PROPOSED"
+    },
+    {
+      "layer_count": 32,
+      "tensor_count": 32,
+      "checkpoint_name_pattern": "model.layers.{i}.post_attention_layernorm.weight",
+      "shape": [960],
+      "dtype": "BF16",
+      "target": "post_attention_layernorm.weight",
+      "runtime_shape": "[960]",
+      "transformation": "RMSNorm affine scale before the MLP; epsilon=1e-5 from config; no bias tensor.",
+      "status": "PROPOSED"
+    }
+  ],
+  "derived_tensor_handling": [
+    {
+      "checkpoint_name": "lm_head.weight",
+      "header_presence": false,
+      "config_reason": "tie_word_embeddings=true",
+      "target": "Use model.embed_tokens.weight as output projection weight",
+      "operation": "logits = linear(final_hidden, token_embedding.weight)",
+      "extra_parameter_copy": false,
+      "status": "PROPOSED_NOT_PRESENT_AS_CHECKPOINT_TENSOR"
+    }
+  ],
+  "required_mapping_invariants": [
+    "All 290 checkpoint names must be accounted for exactly once: 2 global tensors plus 9 tensors for each of 32 layers.",
+    "Reject missing, unexpected, duplicate, wrong-shape, or wrong-dtype entries before loading values into a model.",
+    "No projection biases are expected: attention_bias=false and mlp_bias=false.",
+    "The 3:1 query-to-KV head grouping is preserved; do not reshape the K/V weights as if there were 15 KV heads.",
+    "The proposed RoPE coordinate permutation is applied to Q and K in each head, never to V.",
+    "The output projection reuses the tied token embedding parameter rather than creating an untied lm_head."
+  ]
+}

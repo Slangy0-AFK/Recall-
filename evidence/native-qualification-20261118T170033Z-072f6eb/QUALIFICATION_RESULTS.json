@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "run_id": "native-qualification-20261118T170033Z-072f6eb",
+  "status": "BLOCKED",
+  "repository": {
+    "root": "/workspaces/Recall-",
+    "branch": "copilot/stack-qualification",
+    "starting_commit": "072f6ebdf7952bc65a9eb6908cde935175eb4959",
+    "worktree_before_run": "clean"
+  },
+  "requested_model": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+    "execution_device": "CPU",
+    "execution_precision": "FP32"
+  },
+  "zeta": {
+    "package": "zeta-scaling-toolkit",
+    "version": "0.5.1",
+    "revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+    "runner_protocol_present": true,
+    "checkpoint_runner_implemented": false
+  },
+  "preflight": {
+    "model_assets": "PASS",
+    "asset_hashes": "PASS",
+    "checkpoint_metadata_only_inspection": "PASS",
+    "available_ram_gate": "BLOCKED",
+    "zeta_attention_compatibility": "FAIL",
+    "zeta_rope_compatibility": "FAIL",
+    "native_checkpoint_runner": "BLOCKED",
+    "overall": "BLOCKED",
+    "memory_threshold_mib": 6144,
+    "available_ram_mib": 3973.46,
+    "blockers": [
+      "Available RAM is below the existing 6144 MiB safety threshold.",
+      "Recall has no implemented native checkpoint loader or Zeta inference runner.",
+      "Pinned Zeta attention semantics differ from the checkpoint's Llama attention semantics.",
+      "Pinned Zeta RoPE layout differs from the checkpoint's split-half RoPE layout."
+    ]
+  },
+  "checkpoint": {
+    "snapshot_path": "/home/codespace/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-360M-Instruct/snapshots/a10cc1512eabd3dde888204e902eca88bddb4951",
+    "assets_available": true,
+    "asset_hashes_match_pinned": true,
+    "metadata_only": true,
+    "tensor_values_accessed": false,
+    "tensor_count": 290,
+    "parameter_count": 361821120,
+    "storage_dtype": "BF16",
+    "model_weights_loaded": false,
+    "tokenizer_loaded": false
+  },
+  "stages": {
+    "stage_a_32_token_smoke": {
+      "status": "NOT RUN",
+      "requested_tokens": 32,
+      "actual_tokens_processed": 0,
+      "final_token_position": null,
+      "finite_outputs": null,
+      "cache_validated": false,
+      "model_attention_invocations": 0,
+      "model_rope_invocations": 0,
+      "model_cache_invocations": 0,
+      "throughput_tokens_per_second": null,
+      "wall_seconds": null,
+      "peak_rss_bytes": null,
+      "reason": "Preflight memory and native compatibility gates failed."
+    },
+    "stage_b_256_token_qualification": {
+      "status": "NOT RUN",
+      "requested_tokens": 256,
+      "actual_tokens_processed": 0,
+      "position_continuity": null,
+      "bounded_cache_verified": false,
+      "eviction_order_verified": false,
+      "retained_cache_dimensions": null,
+      "finite_outputs": null,
+      "model_attention_invocations": 0,
+      "model_rope_invocations": 0,
+      "model_cache_invocations": 0,
+      "throughput_tokens_per_second": null,
+      "wall_seconds": null,
+      "peak_rss_bytes": null,
+      "reason": "Stage A did not pass; Stage B was not eligible to run."
+    }
+  },
+  "requested_cache_configuration": {
+    "sink_tokens": 64,
+    "recent_tokens": 64,
+    "maximum_retained_tokens": 128,
+    "applied_to_model_inference": false
+  },
+  "regression_tests": {
+    "status": "PASS_WITH_SKIPS",
+    "unittest": {
+      "discovered": 29,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 5
+    },
+    "pytest": {
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    "combined": {
+      "passed": 51,
+      "failed": 0,
+      "skipped": 5
+    },
+    "qualification_command_exit_code": 1,
+    "qualification_command_exit_reason": "Overall integration qualification is BLOCKED; the test runners themselves passed."
+  },
+  "historical_evidence_checksums": {
+    "before_tests": "PASS",
+    "after_tests": "PASS",
+    "historical_files_overwritten": false
+  },
+  "long_workload_100k": "NOT RUN"
+}

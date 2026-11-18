@@ -1,0 +1,73 @@
+{
+  "status": "PREFLIGHT_BLOCKED",
+  "measured_at_utc": "2026-11-18T17:00:33.256392+00:00",
+  "runtime": {
+    "python": "3.14.2",
+    "cpu_count_os": 2,
+    "cpu_count_psutil": 2
+  },
+  "memory": {
+    "available_bytes": 4166471680,
+    "available_mib": 3973.46,
+    "total_bytes": 8328056832,
+    "safety_threshold_mib": 6144,
+    "safety_threshold_bytes": 6442450944,
+    "available_ram_gate": "FAIL",
+    "cgroup_memory_limit": "max",
+    "cgroup_memory_current_bytes": 4688838656,
+    "cgroup_v1_limit": null,
+    "cgroup_v1_current": null
+  },
+  "disk": {
+    "path": "/workspaces/Recall-",
+    "total_bytes": 33636024320,
+    "used_bytes": 26367123456,
+    "free_bytes": 7268900864,
+    "available_bytes": 7268900864
+  },
+  "dependencies": {
+    "torch": {
+      "installed": "2.15.0",
+      "required": "2.15.0",
+      "matches_pin": true
+    },
+    "psutil": {
+      "installed": "7.2.2",
+      "required": "7.2.2",
+      "matches_pin": true
+    },
+    "pytest": {
+      "installed": "9.2.0",
+      "required": "9.2.0",
+      "matches_pin": true
+    },
+    "zeta-scaling-toolkit": {
+      "installed": "0.5.1",
+      "required": "0.5.1",
+      "matches_pin": true,
+      "vcs_revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b"
+    },
+    "transformers": {
+      "installed": "5.23.0",
+      "required_by_recall_requirements": false
+    },
+    "safetensors": {
+      "installed": "0.8.0",
+      "required_by_recall_requirements": false
+    }
+  },
+  "model_asset_availability": {
+    "exact_pinned_snapshot_available": true,
+    "all_required_assets_available": true,
+    "all_sha256_hashes_match": true
+  },
+  "native_adapter_compatibility": {
+    "pinned_zeta_package_available": true,
+    "pinned_zeta_revision_verified_from_distribution_metadata": true,
+    "native_checkpoint_loader_available": false,
+    "native_inference_runner_available": false,
+    "attention_semantics_compatible": false,
+    "rope_layout_compatible": false,
+    "gate": "FAIL"
+  }
+}

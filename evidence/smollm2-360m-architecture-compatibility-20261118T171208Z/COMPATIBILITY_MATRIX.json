@@ -1,0 +1,155 @@
+{
+  "checkpoint": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+    "config_path": "/home/codespace/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-360M-Instruct/snapshots/a10cc1512eabd3dde888204e902eca88bddb4951/config.json",
+    "tensor_metadata_source": "same snapshot/model.safetensors header; metadata only, no tensor values read",
+    "architecture": "LlamaForCausalLM",
+    "layers": 32,
+    "hidden_size": 960,
+    "intermediate_size": 2560,
+    "query_heads": 15,
+    "key_value_heads": 5,
+    "head_dimension": 64,
+    "weight_dtype": "BF16",
+    "parameter_count": 361821120,
+    "max_position_embeddings": 8192,
+    "vocab_size": 49152
+  },
+  "zeta": {
+    "package": "zeta-scaling-toolkit",
+    "version": "0.5.1",
+    "revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+    "source_root": "/usr/local/python/3.14.2/lib/python3.14/site-packages/zeta_scaling_toolkit"
+  },
+  "matrix": [
+    {
+      "topic": "Grouped-query attention",
+      "checkpoint_requirement": "Q projection [960,960] reshapes to [B,15,S,64]; K and V [320,960] each reshape to [B,5,S,64]. Each KV head serves 3 query heads.",
+      "pinned_zeta_behavior": "NonCollapsingAttention.forward requires broadcastable leading dimensions and same d_k. [B,15,S,64] and [B,5,S,64] are not broadcastable; repeat_interleave(K/V, 3, head axis) satisfies shape only.",
+      "evidence": [
+        "config.json: num_attention_heads=15, num_key_value_heads=5, hidden_size=960",
+        "model.safetensors header: q_proj [960,960], k_proj/v_proj [320,960]",
+        "zeta_scaling_toolkit/core.py:148-198, NonCollapsingAttention.forward"
+      ],
+      "status": "SHAPE_ADAPTABLE_BUT_SEMANTICS_STILL_BLOCKED",
+      "smallest_valid_action": "A Zeta scaled-dot-product GQA path must accept 15 Q heads and 5 K/V heads or define exact 3:1 KV expansion. Expansion alone is not compatibility."
+    },
+    {
+      "topic": "BF16 checkpoint weights",
+      "checkpoint_requirement": "All 290 header entries are BF16; 361821120 parameters. No lm_head tensor is present because tie_word_embeddings=true.",
+      "pinned_zeta_behavior": "Attention converts Q/K/V to FP32 internally (core.py:194-201) and casts output to V dtype. RoPE computes its rotation in FP64 but returns the input dtype (positions.py:69-72). Zeta does not provide checkpoint weight loading.",
+      "evidence": [
+        "model.safetensors header: 290 tensors, dtype BF16",
+        "config.json: torch_dtype=bfloat16, tie_word_embeddings=true",
+        "zeta_scaling_toolkit/core.py:194-201, NonCollapsingAttention.forward",
+        "zeta_scaling_toolkit/positions.py:69-72, rotary_embedding"
+      ],
+      "status": "ADAPTABLE",
+      "smallest_valid_action": "Load values only in a future authorized implementation and widen BF16 tensors to FP32. Widening preserves each stored BF16 value exactly; do not claim model weights were loaded in this investigation."
+    },
+    {
+      "topic": "FP32 CPU execution",
+      "checkpoint_requirement": "Requested execution precision is FP32 on CPU; parameters must be widened from BF16 before FP32 model operations.",
+      "pinned_zeta_behavior": "NonCollapsingAttention selects FP32 accumulation unless any input is FP64; CPU cache stores the input dtype/device and RoPE returns input dtype.",
+      "evidence": [
+        "zeta_scaling_toolkit/core.py:194-201, NonCollapsingAttention.forward",
+        "zeta_scaling_toolkit/positions.py:69-72, rotary_embedding",
+        "zeta_scaling_toolkit/positions.py:179-210, StreamingKVCache.append"
+      ],
+      "status": "ADAPTABLE_AFTER_WEIGHT_WIDENING",
+      "smallest_valid_action": "Keep all loaded model parameters and inference activations FP32; test CPU operator and numerical behavior without relying on BF16 execution."
+    },
+    {
+      "topic": "RoPE frequencies, layout, and scaling",
+      "checkpoint_requirement": "Full head dimension 64; rope_theta=100000; rope_interleaved=false (split-half); rope_scaling=null; configured positions 0 through at most 8191.",
+      "pinned_zeta_behavior": "rotary_embedding(x, positions, base, scaling, scale_factor) supports base=100000 and int64 broadcastable positions, but always rotates adjacent interleaved pairs. Optional linear/NTK scaling exists but is not requested by this checkpoint.",
+      "evidence": [
+        "config.json: head_dim=64, rope_theta=100000, rope_interleaved=false, rope_scaling=null, max_position_embeddings=8192",
+        "zeta_scaling_toolkit/positions.py:10-72, rotary_embedding"
+      ],
+      "status": "EXACTLY_ADAPTABLE_WITH_COORDINATE_PERMUTATION",
+      "smallest_valid_action": "Within each head, permute split-half coordinates [a0..a31,b0..b31] to [a0,b0,...,a31,b31] before Zeta RoPE; use base=100000, no scaling, original absolute int64 positions. Apply identically to Q and K."
+    },
+    {
+      "topic": "Attention scores and normalization",
+      "checkpoint_requirement": "Per-head scores are raw QK^T/sqrt(64), followed by causal softmax and multiplication by V; Q/K vector magnitude is semantically significant.",
+      "pinned_zeta_behavior": "NonCollapsingAttention.forward L2-normalizes Q and K, then uses tau*cos(Q,K) with a learned bounded temperature. Its SDPA route scales normalized Q by tau*sqrt(d_k), equivalent to cosine logits, not scaled raw dot products.",
+      "evidence": [
+        "checkpoint architecture: LlamaForCausalLM, head_dim=64",
+        "zeta_scaling_toolkit/core.py:56-60, NonCollapsingAttention semantics",
+        "zeta_scaling_toolkit/core.py:200-201, Q/K normalization",
+        "zeta_scaling_toolkit/core.py:236 and 269-275, cosine logits and SDPA path",
+        "tests/test_zeta_smollm2_compatibility.py: test_attention_semantics_differ_from_llama_scaled_dot_product"
+      ],
+      "status": "INCOMPATIBLE_CORE_BLOCKER",
+      "smallest_valid_action": "Change Zeta by adding an explicit scaled raw-dot-product attention implementation with GQA and causal masking. A Recall wrapper around the current normalized component cannot restore the discarded per-vector magnitudes."
+    },
+    {
+      "topic": "KV cache dimensions and eviction",
+      "checkpoint_requirement": "Each of 32 layers has K and V shaped [B,5,T,64]; use absolute positions and retain all keys for exact full attention through the configured maximum of 8192 positions.",
+      "pinned_zeta_behavior": "StreamingKVCache.append accepts one position per call, detaches stored tensors, returns int64 absolute positions, and retains sink positions plus the recent window. It does not interpret attention semantics.",
+      "evidence": [
+        "model.safetensors header: k_proj/v_proj [320,960], reshaping to [B,5,T,64]",
+        "config.json: max_position_embeddings=8192",
+        "zeta_scaling_toolkit/positions.py:159-210, StreamingKVCache.__init__/append"
+      ],
+      "status": "ADAPTABLE_WITH_EXPLICIT_NO_EVICTION_SETTINGS",
+      "smallest_valid_action": "Use a separate cache per layer with window=8192 and sink_tokens=0 for exact retention within the checkpoint position limit; pass returned absolute positions to RoPE. Any smaller/sliding window changes the reference context."
+    },
+    {
+      "topic": "Residual connections and normalization",
+      "checkpoint_requirement": "32 Llama decoder layers with pre-attention and post-attention RMSNorm, residual additions around attention and MLP, epsilon=1e-5; norm weights [960].",
+      "pinned_zeta_behavior": "The pinned public API exports no Llama block, RMSNorm, or residual model runner; the installed package contains only core.py, positions.py, and exports in __init__.py.",
+      "evidence": [
+        "config.json: num_hidden_layers=32, rms_norm_eps=1e-05",
+        "model.safetensors header: input_layernorm.weight and post_attention_layernorm.weight [960] per layer",
+        "zeta_scaling_toolkit/__init__.py:1-21, exported public components"
+      ],
+      "status": "RECALL_MODEL_SHELL_REQUIRED_NOT_AN_ATTENTION_BLOCKER",
+      "smallest_valid_action": "Implement the checkpoint's RMSNorm and residual ordering faithfully in the Recall model adapter, or add supported model modules upstream. Do not substitute Zeta QK normalization for RMSNorm."
+    },
+    {
+      "topic": "MLP dimensions and activation",
+      "checkpoint_requirement": "SwiGLU: gate_proj/up_proj [2560,960], down_proj [960,2560], SiLU activation, no MLP bias.",
+      "pinned_zeta_behavior": "No Llama SwiGLU decoder MLP is exported by the pinned Zeta API.",
+      "evidence": [
+        "config.json: intermediate_size=2560, hidden_act=silu, mlp_bias=false",
+        "model.safetensors header: gate_proj [2560,960], up_proj [2560,960], down_proj [960,2560]",
+        "zeta_scaling_toolkit/__init__.py:1-21"
+      ],
+      "status": "RECALL_MODEL_SHELL_REQUIRED_NOT_AN_ATTENTION_BLOCKER",
+      "smallest_valid_action": "Map the three projection weights and compute down_proj(silu(gate_proj(x))*up_proj(x)) in the Llama residual path."
+    },
+    {
+      "topic": "Embedding and output projection",
+      "checkpoint_requirement": "Token embedding [49152,960]; final norm [960]; tied output embedding, with no separate lm_head tensor.",
+      "pinned_zeta_behavior": "No tokenizer, embedding, final normalization, or causal-LM output head is exported by the pinned Zeta API.",
+      "evidence": [
+        "config.json: vocab_size=49152, hidden_size=960, tie_word_embeddings=true",
+        "model.safetensors header: model.embed_tokens.weight [49152,960], model.norm.weight [960], no lm_head.weight",
+        "zeta_scaling_toolkit/__init__.py:1-21"
+      ],
+      "status": "RECALL_MODEL_SHELL_REQUIRED",
+      "smallest_valid_action": "Use the same embedding parameter for output logits via its transpose; avoid allocating an independent untied lm_head."
+    },
+    {
+      "topic": "Model loading and tensor mapping",
+      "checkpoint_requirement": "Validate and map all 290 header entries: two global tensors and nine tensors per each of 32 layers, preserving BF16 values and tied embedding metadata.",
+      "pinned_zeta_behavior": "No from_pretrained, safetensors loader, Llama model class, or checkpoint mapping API is exposed in the pinned package.",
+      "evidence": [
+        "model.safetensors header: 290 names/shapes/dtypes, metadata only",
+        "zeta_scaling_toolkit/__init__.py:1-21",
+        "zeta package inventory at pinned version: __init__.py, core.py, positions.py, py.typed"
+      ],
+      "status": "RECALL_LOADER_REQUIRED_AFTER_ATTENTION_CHANGE",
+      "smallest_valid_action": "Implement a metadata-first Recall loader with exact name/shape/dtype coverage checks; only load tensor values after the attention blocker and 6144 MiB memory preflight are cleared."
+    }
+  ],
+  "decision": {
+    "A_recall_adapter_using_existing_zeta_can_support_genuine_execution": false,
+    "B_pinned_zeta_change_required": true,
+    "C_attention_architecture_materially_differs": true,
+    "reason": "A Recall adapter can bridge shape/layout and compose model plumbing, but cannot preserve checkpoint attention semantics through pinned NonCollapsingAttention."
+  }
+}
