@@ -1,0 +1,420 @@
+{
+  "commit_identifiers": {
+    "connected_repositories": {
+      "System-Stability-Toolkit": {
+        "checkout_path": "/tmp/recall-integration-inspect/System-Stability-Toolkit",
+        "default_branch": "main",
+        "expected_revision": "9e7a254ee9607b23ae35b756110d3713ad0dac45",
+        "license": "MIT",
+        "observed_revision": "9e7a254ee9607b23ae35b756110d3713ad0dac45",
+        "url": "https://github.com/Slangy0-AFK/System-Stability-Toolkit"
+      },
+      "deterministic-rag-governor": {
+        "checkout_path": "/tmp/recall-integration-inspect/deterministic-rag-governor",
+        "default_branch": "main",
+        "expected_revision": "7eee42bc77757e8a23138b9b65c8a1072c88ca9d",
+        "license": "MIT",
+        "observed_revision": "7eee42bc77757e8a23138b9b65c8a1072c88ca9d",
+        "url": "https://github.com/Slangy0-AFK/deterministic-rag-governor"
+      },
+      "mathmesh-governor": {
+        "checkout_path": "/tmp/recall-integration-inspect/mathmesh-governor",
+        "default_branch": "main",
+        "expected_revision": "4ef77424b7ef4c5b131f558e85fa1eae24d890ab",
+        "license": "MIT",
+        "observed_revision": "4ef77424b7ef4c5b131f558e85fa1eae24d890ab",
+        "url": "https://github.com/Slangy0-AFK/mathmesh-governor"
+      },
+      "zeta-scaling-toolkit": {
+        "checkout_path": "/tmp/recall-integration-inspect/zeta-scaling-toolkit",
+        "default_branch": "main",
+        "expected_revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+        "license": "MIT",
+        "observed_revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+        "url": "https://github.com/Slangy0-AFK/zeta-scaling-toolkit"
+      }
+    },
+    "recall": {
+      "branch": "copilot/zeta-deeptrace-initial-setup",
+      "commit": "1c8cbf5bd997993ed8320cb2be568230aa8b4dd1",
+      "license": "MIT",
+      "working_tree_at_phase1": "clean before harness changes",
+      "working_tree_at_run": "M README.md\n?? adapters/\n?? config/\n?? recall_harness.py\n?? requirements.txt\n?? tests/__init__.py\n?? tests/test_adapters.py\n?? tests/test_fault_isolation.py\n?? tests/test_harness.py\n?? tests/test_integration.py"
+    }
+  },
+  "coordination": {
+    "execution_model": "serial",
+    "execution_order": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+    "native_component_events_received": 0,
+    "notes": "Recall's own observations carry the shared ID. Zeta, MathMesh parity, and System-Stability CLI have no shared experiment-event interface; RAG audit writes were not called.",
+    "parallel_execution_claimed": false,
+    "recall_event_count": 6,
+    "status": "PARTIAL"
+  },
+  "ended_at": "2026-11-18T13:21:34.158452+00:00",
+  "environment_validation": {
+    "checks": {
+      "node": {
+        "expected": ">=22.6 for direct TypeScript module loading",
+        "observed": "v24.22.2",
+        "passed": true
+      },
+      "psutil": {
+        "expected": "7.2.2",
+        "observed": "7.2.2",
+        "passed": true
+      },
+      "python_minimum": {
+        "expected": "3.10",
+        "observed": "3.14.2",
+        "passed": true
+      },
+      "torch": {
+        "expected": "2.15.0",
+        "observed": "2.15.0",
+        "passed": true
+      },
+      "zeta-scaling-toolkit": {
+        "expected": "0.5.1",
+        "module_importable_without_checkout": false,
+        "observed_distribution": "0.5.1",
+        "observed_source_revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b",
+        "observed_source_version": "0.5.1",
+        "passed": true
+      }
+    },
+    "install_actions_taken": [],
+    "installed_versions": {
+      "fastapi": null,
+      "psutil": "7.2.2",
+      "pydantic": "2.14.3",
+      "python-dotenv": null,
+      "torch": "2.15.0",
+      "uvicorn": null,
+      "zeta-scaling-toolkit": "0.5.1"
+    },
+    "notes": "No packages were installed or upgraded. The RAG adapter's HTTP client uses the Python standard library, but the connected RAG server's pinned runtime is incomplete in this environment.",
+    "rag_governor_pinned_runtime": {
+      "missing_or_mismatched": [
+        "fastapi==0.115.6 (installed: missing)",
+        "uvicorn==0.34.0 (installed: missing)",
+        "pydantic==2.10.6 (installed: 2.14.3)",
+        "python-dotenv==1.0.1 (installed: missing)"
+      ],
+      "requirements_file": "deterministic-rag-governor/requirements.txt; not installed by Recall",
+      "status": "BLOCKED"
+    },
+    "status": "PARTIAL"
+  },
+  "events": [
+    {
+      "event": "experiment_started",
+      "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+      "native_component_event": false,
+      "sequence": 1,
+      "source": "Recall",
+      "system": "Recall",
+      "timestamp": "2026-11-18T13:21:31.624056+00:00"
+    },
+    {
+      "duration_seconds": 2.0591025970002192,
+      "event": "adapter_completed",
+      "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+      "finished_at": "2026-11-18T13:21:33.814205+00:00",
+      "native_component_event": false,
+      "sequence": 2,
+      "source": "Recall observation",
+      "started_at": "2026-11-18T13:21:31.755108+00:00",
+      "status": "PASS",
+      "system": "zeta_scaling_toolkit",
+      "timestamp": "2026-11-18T13:21:33.814205+00:00"
+    },
+    {
+      "duration_seconds": 0.07996269999989636,
+      "event": "adapter_completed",
+      "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+      "finished_at": "2026-11-18T13:21:33.894174+00:00",
+      "native_component_event": false,
+      "sequence": 3,
+      "source": "Recall observation",
+      "started_at": "2026-11-18T13:21:33.814224+00:00",
+      "status": "PARTIAL",
+      "system": "mathmesh_governor",
+      "timestamp": "2026-11-18T13:21:33.894174+00:00"
+    },
+    {
+      "duration_seconds": 0.062343249000150536,
+      "event": "adapter_completed",
+      "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+      "finished_at": "2026-11-18T13:21:33.956532+00:00",
+      "native_component_event": false,
+      "sequence": 4,
+      "source": "Recall observation",
+      "started_at": "2026-11-18T13:21:33.894195+00:00",
+      "status": "PASS",
+      "system": "system_stability_toolkit",
+      "timestamp": "2026-11-18T13:21:33.956532+00:00"
+    },
+    {
+      "duration_seconds": 7.253000148921274e-06,
+      "event": "adapter_completed",
+      "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+      "finished_at": "2026-11-18T13:21:33.956555+00:00",
+      "native_component_event": false,
+      "sequence": 5,
+      "source": "Recall observation",
+      "started_at": "2026-11-18T13:21:33.956547+00:00",
+      "status": "BLOCKED",
+      "system": "deterministic_rag_governor",
+      "timestamp": "2026-11-18T13:21:33.956555+00:00"
+    },
+    {
+      "event": "experiment_completed",
+      "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+      "native_component_event": false,
+      "sequence": 6,
+      "source": "Recall",
+      "system": "Recall",
+      "timestamp": "2026-11-18T13:21:34.157639+00:00"
+    }
+  ],
+  "experiment_id": "recall-qualification-e77f8c08-e2ba-4d53-bbcc-962040c1a6b1",
+  "fault_isolation": {
+    "notes": "Adapter failures are isolated in the Recall result, but there is no live four-service outage test because MathMesh and RAG endpoints are unconfigured.",
+    "observed_unavailable_components": [
+      "deterministic_rag_governor"
+    ],
+    "other_adapter_results_retained": true,
+    "simulated_failures_used_as_evidence": false,
+    "status": "PARTIAL"
+  },
+  "hardware_runtime": {
+    "architecture": "x86_64",
+    "cuda_available": false,
+    "disk_free_gb_at_report": 8.221138000488281,
+    "logical_cpu_count": 2,
+    "memory_available_mb_at_report": 3999.44140625,
+    "memory_total_mb": 7942.25390625,
+    "node": "v24.22.2",
+    "platform": "Linux-6.8.0-1070-azure-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "python": "3.14.2",
+    "torch_runtime": "2.15.0+cu132"
+  },
+  "integrity": {
+    "cache_integrity": "PASS",
+    "checkpoint_integrity": "NOT TESTED",
+    "notes": "No model checkpoint was loaded, written, or verified.",
+    "numerical_finiteness": "PASS",
+    "status": "PARTIAL"
+  },
+  "model_provenance": {
+    "context_clarification": "100,000 contiguous processed tokens is a total workload, not 100,000 tokens of simultaneous attention or retained context.",
+    "historical_checkpoints": "56/56 passed",
+    "historical_final_token_position": 99999,
+    "historical_source": "User-provided reference; original evidence was not opened or modified",
+    "historical_throughput_tokens_per_second": 10.7199,
+    "historical_wall_seconds": 9636.7,
+    "historical_workload_tokens": 100000,
+    "local_reference_evidence_verified": false,
+    "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "native_context_tokens": 8192,
+    "precision": "CPU FP32",
+    "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+    "target_throughput_tokens_per_second": 21.4398,
+    "tokenizer_provenance": {
+      "note": "The benchmark's tokenizer was not instantiated in this run.",
+      "revision": "NOT TESTED",
+      "tokenizer_id": "NOT LOADED"
+    }
+  },
+  "original_100k_evidence": {
+    "files_written_or_modified": false,
+    "run_repeated": false,
+    "status": "PRESERVED; no original 100K evidence path was used as output"
+  },
+  "performance": {
+    "actual_tokens_processed": 0,
+    "inference_seconds": null,
+    "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "model_revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+    "model_weights_cached": true,
+    "reason": "The Zeta repository exposes attention/cache primitives, not a runner for the pinned Hugging Face model. Pinned model weights are present in the local Hugging Face cache. No model was loaded or run; the qualification gates do not permit inference.",
+    "status": "BLOCKED",
+    "target_reached": null,
+    "target_tokens_per_second": 21.4398,
+    "throughput_tokens_per_second": null,
+    "total_harness_elapsed_seconds": 2.534395433999862,
+    "zeta_model_runner_available": false
+  },
+  "phases": {
+    "1_dependency_environment_validation": "PARTIAL",
+    "2_individual_adapter_tests": "PARTIAL",
+    "3_four_system_lightweight_integration": "BLOCKED",
+    "3_four_system_lightweight_integration_reason": "A real four-system integration was not run because one or more adapters are blocked or partial; Recall-local observations are not component telemetry.",
+    "4_shared_experiment_id_telemetry_correlation": "PARTIAL",
+    "5_numerical_and_checkpoint_integrity": "PARTIAL",
+    "6_component_outage_fault_isolation": "PARTIAL",
+    "7_short_zeta_inference_benchmark": "BLOCKED",
+    "8_long_benchmark": "NOT TESTED"
+  },
+  "production_readiness": "NOT ASSESSED",
+  "qualification_status": "BLOCKED",
+  "schema_version": 1,
+  "started_at": "2026-11-18T13:21:31.624056+00:00",
+  "systems": {
+    "deterministic_rag_governor": {
+      "details": {
+        "audit_events": 0,
+        "audit_mode": "UNSUPPORTED",
+        "event_timestamps": [],
+        "evidence_references": [],
+        "failed_or_dropped_events": "NOT TESTED",
+        "interface": "GET /health",
+        "query_events": 0,
+        "reason": "No RAG service URL is configured. The repository has no documented metadata-only audit endpoint; /govern may retrieve and generate.",
+        "retrieval_augmentation": "NOT RUN",
+        "status": "BLOCKED"
+      },
+      "duration_seconds": 7.754000080240075e-06,
+      "finished_at": "2026-11-18T13:21:33.956555+00:00",
+      "started_at": "2026-11-18T13:21:33.956547+00:00",
+      "status": "BLOCKED"
+    },
+    "mathmesh_governor": {
+      "details": {
+        "audit_event_delivery": {
+          "attempted": 0,
+          "delivered": 0,
+          "dropped": null,
+          "failed": 0,
+          "reason": "No MathMesh deployment/admin token was configured. The supported recordAudit endpoint requires an authenticated remote write.",
+          "status": "BLOCKED"
+        },
+        "interface": "governor/shared/mathChecks.ts:evaluateVoteParity",
+        "mixed_parity_vector": {
+          "aligned": false,
+          "mismatchedVote": 3,
+          "reason": "Base 8/10: Modulus mismatch \u2014 out-of-sync vector: 3"
+        },
+        "notes": "This supported check validates parity; it does not implement base conversion or a round-trip operation.",
+        "same_parity_vector": {
+          "aligned": true,
+          "reason": null
+        },
+        "status": "PARTIAL",
+        "unsupported_operations": [
+          "radix conversion",
+          "numeric round-trip"
+        ]
+      },
+      "duration_seconds": 0.07996511400006057,
+      "finished_at": "2026-11-18T13:21:33.894174+00:00",
+      "started_at": "2026-11-18T13:21:33.814224+00:00",
+      "status": "PARTIAL"
+    },
+    "system_stability_toolkit": {
+      "details": {
+        "applied": false,
+        "interface": "crash_fix.py <workload> --json",
+        "notes": "Advice is recorded only; no workload or resource limits are changed.",
+        "recommendation": {
+          "buffer_window": 32,
+          "parallel_tasks": 2,
+          "task_size": 32
+        },
+        "resource_measurements": {
+          "baseline": {
+            "cpu_count": 2,
+            "cpu_percent": 0.0,
+            "disk_free_gb": 8.221138000488281,
+            "measurement_source": "Recall via psutil; not measured by the toolkit",
+            "memory_available_mb": 4265.9296875,
+            "memory_percent": 46.3,
+            "memory_used_mb": 3676.32421875,
+            "process_memory_mb": 28.046875,
+            "timestamp": "2026-11-18T13:21:31.654818+00:00",
+            "timestamp_epoch": 1795008091.6548264
+          },
+          "during": {
+            "cpu_count": 2,
+            "cpu_percent": 0.0,
+            "disk_free_gb": 8.221138000488281,
+            "measurement_source": "Recall via psutil; not measured by the toolkit",
+            "memory_available_mb": 4000.1796875,
+            "memory_percent": 49.6,
+            "memory_used_mb": 3942.07421875,
+            "process_memory_mb": 579.38671875,
+            "timestamp": "2026-11-18T13:21:33.956795+00:00",
+            "timestamp_epoch": 1795008093.9568028
+          },
+          "post": {
+            "cpu_count": 2,
+            "cpu_percent": 0.0,
+            "disk_free_gb": 8.221138000488281,
+            "measurement_source": "Recall via psutil; not measured by the toolkit",
+            "memory_available_mb": 4000.1796875,
+            "memory_percent": 49.6,
+            "memory_used_mb": 3942.07421875,
+            "process_memory_mb": 579.38671875,
+            "timestamp": "2026-11-18T13:21:34.057327+00:00",
+            "timestamp_epoch": 1795008094.0573368
+          }
+        },
+        "status": "PASS",
+        "temperature_or_cooling_measurement": "NOT IMPLEMENTED"
+      },
+      "duration_seconds": 0.062345153000023856,
+      "finished_at": "2026-11-18T13:21:33.956532+00:00",
+      "started_at": "2026-11-18T13:21:33.894195+00:00",
+      "status": "PASS"
+    },
+    "zeta_scaling_toolkit": {
+      "details": {
+        "actual_model_tokens_processed": 0,
+        "attention_api": "zeta_scaling_toolkit.NonCollapsingAttention",
+        "attention_output_finite": true,
+        "attention_probe_seconds": 0.3207693039998958,
+        "attention_shape": [
+          1,
+          2,
+          32,
+          16
+        ],
+        "cache_api": "zeta_scaling_toolkit.StreamingKVCache",
+        "cache_next_position": 5,
+        "cache_positions_after_five_appends": [
+          0,
+          3,
+          4
+        ],
+        "cache_state": "COMPONENT_CACHE_PROBE",
+        "checkpoint_integrity": "NOT TESTED",
+        "model_inference_interface": "UNSUPPORTED",
+        "notes": "The probe exercises toolkit attention/cache primitives only. The toolkit does not expose a Hugging Face model runner.",
+        "package_path": "/tmp/recall-integration-inspect/zeta-scaling-toolkit/zeta_scaling_toolkit/__init__.py",
+        "package_version": "0.5.1",
+        "sequence_length": 32,
+        "status": "PASS"
+      },
+      "duration_seconds": 2.059104841000135,
+      "finished_at": "2026-11-18T13:21:33.814205+00:00",
+      "started_at": "2026-11-18T13:21:31.755108+00:00",
+      "status": "PASS"
+    }
+  },
+  "workload": {
+    "actual_model_tokens_processed": 0,
+    "description": "One Zeta attention/cache component probe with sequence_length=32; no model or tokenizer was run.",
+    "historical_workload_tokens": 100000,
+    "zeta_sequence_length": 32
+  }
+}
