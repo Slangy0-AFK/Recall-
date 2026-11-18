@@ -1,148 +1,0 @@
-/workspaces/Recall-/deeptrace/four_system_qualification.py:604: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  self.experiment_id = f"FOUR_SYSTEM_QUALIFICATION_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
-/workspaces/Recall-/deeptrace/four_system_qualification.py:49: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  "timestamp": datetime.utcnow().isoformat() + "Z",
-/workspaces/Recall-/deeptrace/four_system_qualification.py:613: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  "timestamp": datetime.utcnow().isoformat() + "Z",
-2026-11-18 03:56:30,833 - __main__ - INFO - 
-================================================================================
-2026-11-18 03:56:30,833 - __main__ - INFO - FOUR-SYSTEM EQUIPMENT QUALIFICATION - CONTROLLED RERUN
-2026-11-18 03:56:30,833 - __main__ - INFO - ================================================================================
-2026-11-18 03:56:30,833 - __main__ - INFO - Experiment ID: FOUR_SYSTEM_QUALIFICATION_20261118_035630
-2026-11-18 03:56:30,833 - __main__ - INFO - Previous baseline: FOUR_SYSTEM_4K_20261118_031909
-2026-11-18 03:56:30,833 - __main__ - INFO - Model: HuggingFaceTB/SmolLM2-360M-Instruct
-2026-11-18 03:56:30,833 - __main__ - INFO - Revision: a10cc1512eabd3dde888204e902eca88bddb4951
-2026-11-18 03:56:30,833 - __main__ - INFO - ================================================================================
-2026-11-18 03:56:30,833 - __main__ - INFO - ================================================================================
-2026-11-18 03:56:30,833 - __main__ - INFO - ZETA EQUIPMENT QUALIFICATION
-2026-11-18 03:56:30,833 - __main__ - INFO - ================================================================================
-/workspaces/Recall-/deeptrace/four_system_qualification.py:83: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  self.results["timestamp_start"] = datetime.utcnow().isoformat() + "Z"
-2026-11-18 03:56:30,833 - __main__ - INFO - 
-[Phase 1] Load model and tokenizer
-2026-11-18 03:56:34,327 - httpx2 - INFO - HTTP Request: GET https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-360M-Instruct/tree/a10cc1512eabd3dde888204e902eca88bddb4951/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
-2026-11-18 03:56:34,352 - httpx2 - INFO - HTTP Request: GET https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-360M-Instruct/tree/a10cc1512eabd3dde888204e902eca88bddb4951?recursive=true&expand=false "HTTP/1.1 200 OK"
-[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
-Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:01<05:57,  1.24s/it]Loading weights:  17%|█▋        | 48/290 [00:01<00:05, 44.17it/s]Loading weights:  21%|██        | 61/290 [00:01<00:05, 41.93it/s]Loading weights:  24%|██▍       | 70/290 [00:02<00:05, 41.09it/s]Loading weights:  27%|██▋       | 77/290 [00:02<00:04, 42.77it/s]Loading weights:  29%|██▉       | 84/290 [00:02<00:04, 43.45it/s]Loading weights:  31%|███       | 90/290 [00:02<00:04, 46.02it/s]Loading weights:  33%|███▎      | 96/290 [00:02<00:04, 45.13it/s]Loading weights:  38%|███▊      | 111/290 [00:02<00:02, 63.13it/s]Loading weights:  41%|████▏     | 120/290 [00:02<00:02, 68.61it/s]Loading weights:  45%|████▍     | 130/290 [00:02<00:02, 75.03it/s]Loading weights:  48%|████▊     | 139/290 [00:03<00:02, 71.12it/s]Loading weights:  51%|█████▏    | 149/290 [00:03<00:01, 76.49it/s]Loading weights:  56%|█████▌    | 162/290 [00:03<00:01, 89.15it/s]Loading weights:  59%|█████▉    | 172/290 [00:03<00:01, 81.86it/s]Loading weights:  63%|██████▎   | 183/290 [00:03<00:01, 81.04it/s]Loading weights:  66%|██████▌   | 192/290 [00:03<00:01, 80.98it/s]Loading weights:  69%|██████▉   | 201/290 [00:03<00:01, 69.40it/s]Loading weights:  72%|███████▏  | 210/290 [00:03<00:01, 71.51it/s]Loading weights:  76%|███████▌  | 221/290 [00:04<00:00, 73.87it/s]Loading weights:  82%|████████▏ | 237/290 [00:04<00:00, 86.08it/s]Loading weights:  85%|████████▍ | 246/290 [00:04<00:00, 86.97it/s]Loading weights:  88%|████████▊ | 255/290 [00:04<00:00, 84.87it/s]Loading weights:  91%|█████████ | 264/290 [00:04<00:00, 66.58it/s]Loading weights:  94%|█████████▍| 273/290 [00:04<00:00, 71.14it/s]Loading weights:  97%|█████████▋| 282/290 [00:04<00:00, 75.64it/s]Loading weights: 100%|██████████| 290/290 [00:04<00:00, 58.95it/s]
-2026-11-18 03:56:40,216 - __main__ - INFO - ✓ Model loaded: llama
-2026-11-18 03:56:40,233 - __main__ - INFO - ✓ Tokenizer vocab size: 49152
-2026-11-18 03:56:40,236 - __main__ - INFO - 
-[Phase 2] Generate 4,096-token workload
-2026-11-18 03:56:40,237 - __main__ - ERROR - Zeta qualification failed: 'FactGenerator' object has no attribute 'generate'
-2026-11-18 03:56:40,240 - __main__ - ERROR - Traceback (most recent call last):
-  File "/workspaces/Recall-/deeptrace/four_system_qualification.py", line 109, in run_qualification
-    facts = fact_gen.generate(num_facts=10, seed=100)
-            ^^^^^^^^^^^^^^^^^
-AttributeError: 'FactGenerator' object has no attribute 'generate'
-
-2026-11-18 03:56:40,362 - __main__ - INFO - 
-================================================================================
-2026-11-18 03:56:40,362 - __main__ - INFO - MATHMESH GOVERNOR QUALIFICATION
-2026-11-18 03:56:40,362 - __main__ - INFO - ================================================================================
-/workspaces/Recall-/deeptrace/four_system_qualification.py:238: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  self.results["timestamp_start"] = datetime.utcnow().isoformat() + "Z"
-2026-11-18 03:56:40,362 - __main__ - INFO - ✓ conv_42_from_10_to_2: 42 -> 101010 -> 42
-2026-11-18 03:56:40,362 - __main__ - INFO - ✓ conv_42_from_10_to_10: 42 -> 42 -> 42
-2026-11-18 03:56:40,362 - __main__ - INFO - ✓ conv_42_from_10_to_12: 42 -> 36 -> 42
-2026-11-18 03:56:40,363 - __main__ - ERROR - Error in conv_42_from_10_to_60: string index out of range
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_256_from_10_to_2: 256 -> 100000000 -> 256
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_256_from_10_to_10: 256 -> 256 -> 256
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_256_from_10_to_12: 256 -> 194 -> 256
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_256_from_10_to_60: 256 -> 4G -> 256
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_1024_from_10_to_2: 1024 -> 10000000000 -> 1024
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_1024_from_10_to_10: 1024 -> 1024 -> 1024
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_1024_from_10_to_12: 1024 -> 714 -> 1024
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_1024_from_10_to_60: 1024 -> H4 -> 1024
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_4096_from_10_to_2: 4096 -> 1000000000000 -> 4096
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_4096_from_10_to_10: 4096 -> 4096 -> 4096
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_4096_from_10_to_12: 4096 -> 2454 -> 4096
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_4096_from_10_to_60: 4096 -> 18G -> 4096
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_1_from_10_to_2: 1 -> 1 -> 1
-2026-11-18 03:56:40,363 - __main__ - INFO - ✓ conv_1_from_10_to_10: 1 -> 1 -> 1
-2026-11-18 03:56:40,364 - __main__ - INFO - ✓ conv_1_from_10_to_12: 1 -> 1 -> 1
-2026-11-18 03:56:40,364 - __main__ - INFO - ✓ conv_1_from_10_to_60: 1 -> 1 -> 1
-2026-11-18 03:56:40,364 - __main__ - INFO - ✓ conv_65535_from_10_to_2: 65535 -> 1111111111111111 -> 65535
-2026-11-18 03:56:40,364 - __main__ - INFO - ✓ conv_65535_from_10_to_10: 65535 -> 65535 -> 65535
-2026-11-18 03:56:40,364 - __main__ - INFO - ✓ conv_65535_from_10_to_12: 65535 -> 31B13 -> 65535
-2026-11-18 03:56:40,364 - __main__ - INFO - ✓ conv_65535_from_10_to_60: 65535 -> ICF -> 65535
-2026-11-18 03:56:40,364 - __main__ - INFO - 
-MathMesh Summary: 23/24 passed (95.8%)
-/workspaces/Recall-/deeptrace/four_system_qualification.py:314: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  self.results["timestamp_end"] = datetime.utcnow().isoformat() + "Z"
-2026-11-18 03:56:40,365 - __main__ - INFO - 
-================================================================================
-2026-11-18 03:56:40,365 - __main__ - INFO - SYSTEM-STABILITY TOOLKIT QUALIFICATION
-2026-11-18 03:56:40,365 - __main__ - INFO - ================================================================================
-2026-11-18 03:56:40,365 - __main__ - INFO - 
-[Phase 1] Baseline snapshot
-/workspaces/Recall-/deeptrace/four_system_qualification.py:466: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  "timestamp": datetime.utcnow().isoformat() + "Z",
-2026-11-18 03:56:40,465 - __main__ - INFO - ✓ Baseline: Memory 59.1%, CPU 16.7%
-2026-11-18 03:56:40,466 - __main__ - INFO - 
-[Phase 2] Simulated Zeta inference (heavy workload)
-2026-11-18 03:56:42,704 - __main__ - INFO - ✓ During: Memory 58.8%, CPU 14.3%
-2026-11-18 03:56:42,704 - __main__ - INFO - 
-[Phase 3] Post-inference snapshot
-2026-11-18 03:56:42,990 - __main__ - INFO - ✓ Post: Memory 58.6%, CPU 14.3%
-2026-11-18 03:56:42,990 - __main__ - INFO - 
-[Phase 4] Recommendation generation
-2026-11-18 03:56:42,990 - __main__ - INFO - 
-[Phase 5] Verify advisory-only operation
-2026-11-18 03:56:42,990 - __main__ - INFO - ✓ No recommendations needed
-2026-11-18 03:56:42,990 - __main__ - INFO - 
-================================================================================
-2026-11-18 03:56:42,991 - __main__ - INFO - DETERMINISTIC RAG GOVERNOR QUALIFICATION
-2026-11-18 03:56:42,991 - __main__ - INFO - ================================================================================
-2026-11-18 03:56:42,991 - __main__ - INFO - 
-[Phase 1] Native-only audit mode verification
-2026-11-18 03:56:42,991 - __main__ - INFO - Mode: NATIVE_ONLY (no external retrieval)
-/workspaces/Recall-/deeptrace/four_system_qualification.py:509: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  "timestamp": datetime.utcnow().isoformat() + "Z",
-2026-11-18 03:56:42,991 - __main__ - INFO - ✓ Query 1: What is ZD-0001?
-2026-11-18 03:56:42,991 - __main__ - INFO -   - Query ID: QUERY-FOUR_SYSTEM_QUALIFICATION_20261118_035630-0001
-2026-11-18 03:56:42,991 - __main__ - INFO -   - Mode: native_only (no external retrieval)
-2026-11-18 03:56:42,991 - __main__ - INFO -   - Audit recorded: True
-2026-11-18 03:56:42,992 - __main__ - INFO - ✓ Query 2: Who is involved in experiment?
-2026-11-18 03:56:42,992 - __main__ - INFO -   - Query ID: QUERY-FOUR_SYSTEM_QUALIFICATION_20261118_035630-0002
-2026-11-18 03:56:42,992 - __main__ - INFO -   - Mode: native_only (no external retrieval)
-2026-11-18 03:56:42,993 - __main__ - INFO -   - Audit recorded: True
-2026-11-18 03:56:42,993 - __main__ - INFO - ✓ Query 3: What are the results?
-2026-11-18 03:56:42,993 - __main__ - INFO -   - Query ID: QUERY-FOUR_SYSTEM_QUALIFICATION_20261118_035630-0003
-2026-11-18 03:56:42,993 - __main__ - INFO -   - Mode: native_only (no external retrieval)
-2026-11-18 03:56:42,993 - __main__ - INFO -   - Audit recorded: True
-2026-11-18 03:56:42,993 - __main__ - INFO - 
-[Phase 2] Verify no silent context injection
-2026-11-18 03:56:42,993 - __main__ - INFO - ✓ All 3 queries processed
-2026-11-18 03:56:42,993 - __main__ - INFO - ✓ Zero external KB searches (native-only mode)
-2026-11-18 03:56:42,993 - __main__ - INFO - ✓ Zero evidence integrated (by design)
-2026-11-18 03:56:42,993 - __main__ - INFO - ✓ All queries recorded in audit log
-2026-11-18 03:56:42,993 - __main__ - INFO - 
-================================================================================
-2026-11-18 03:56:42,993 - __main__ - INFO - FAULT ISOLATION TESTS
-2026-11-18 03:56:42,993 - __main__ - INFO - ================================================================================
-2026-11-18 03:56:42,994 - __main__ - INFO - 
-[Test 1] MathMesh unavailable
-/workspaces/Recall-/deeptrace/four_system_qualification.py:561: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  "timestamp": datetime.utcnow().isoformat() + "Z",
-2026-11-18 03:56:42,994 - __main__ - INFO - ✓ MathMesh unavailable: Zeta continues (verified)
-2026-11-18 03:56:42,994 - __main__ - INFO - 
-[Test 2] System-Stability unavailable
-/workspaces/Recall-/deeptrace/four_system_qualification.py:572: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  "timestamp": datetime.utcnow().isoformat() + "Z",
-2026-11-18 03:56:42,994 - __main__ - INFO - ✓ Stability unavailable: Zeta continues (verified)
-2026-11-18 03:56:42,994 - __main__ - INFO - 
-[Test 3] RAG Governor unavailable
-/workspaces/Recall-/deeptrace/four_system_qualification.py:583: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
-  "timestamp": datetime.utcnow().isoformat() + "Z",
-2026-11-18 03:56:42,994 - __main__ - INFO - ✓ RAG unavailable: Zeta continues (verified)
-2026-11-18 03:56:43,002 - __main__ - INFO - 
-✓ Results saved to deeptrace/results/FOUR_SYSTEM_QUALIFICATION_20261118_035630_qualification_results.json
-2026-11-18 03:56:43,002 - __main__ - INFO - 
-================================================================================
-2026-11-18 03:56:43,003 - __main__ - INFO - QUALIFICATION SUMMARY
-2026-11-18 03:56:43,003 - __main__ - INFO - ================================================================================
-2026-11-18 03:56:43,003 - __main__ - INFO - ZETA                : FAIL
-2026-11-18 03:56:43,003 - __main__ - INFO - STABILITY           : PASS
-2026-11-18 03:56:43,003 - __main__ - INFO - RAG                 : PASS
-2026-11-18 03:56:43,003 - __main__ - INFO - FAULT_ISOLATION     : PASS
-2026-11-18 03:56:43,003 - __main__ - INFO - ================================================================================
