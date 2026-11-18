@@ -15,6 +15,9 @@ from .retrieval_tests import (
     TestE_NegativeRetrieval,
 )
 from .experiment import DeepTraceConfig, DeepTraceExperiment
+from .zeta_inference import ZetaLanguageModel, ZetaTransformerBlock
+from .tokenizer import SimpleTokenizer
+from .native_integration import NativeZetaIntegration
 
 __version__ = "0.1.0"
 __all__ = [
@@ -32,4 +35,8 @@ __all__ = [
     "TestE_NegativeRetrieval",
     "DeepTraceConfig",
     "DeepTraceExperiment",
+    "ZetaLanguageModel",
+    "ZetaTransformerBlock",
+    "SimpleTokenizer",
+    "NativeZetaIntegration",
 ]

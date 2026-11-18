@@ -1,0 +1,91 @@
+/workspaces/Recall-/deeptrace/four_system_orchestrator.py:398: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  experiment_id = f"FOUR_SYSTEM_4K_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
+/workspaces/Recall-/deeptrace/four_system_orchestrator.py:43: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  self.start_timestamp = datetime.utcnow().isoformat() + "Z"
+2026-11-18 03:19:09,395 - __main__ - INFO - Initializing Four-System Experiment...
+2026-11-18 03:19:09,395 - __main__ - INFO - Experiment ID: FOUR_SYSTEM_4K_20261118_031909
+2026-11-18 03:19:09,395 - deeptrace.mathmesh_governor - INFO - MathMesh Governor initialized for experiment FOUR_SYSTEM_4K_20261118_031909
+2026-11-18 03:19:09,395 - deeptrace.stability_toolkit - INFO - System-Stability Toolkit initialized for experiment FOUR_SYSTEM_4K_20261118_031909
+2026-11-18 03:19:09,396 - deeptrace.rag_governor - INFO - Deterministic RAG Governor initialized for experiment FOUR_SYSTEM_4K_20261118_031909 in native_only mode
+2026-11-18 03:19:09,396 - __main__ - INFO - ✓ Four systems initialized
+2026-11-18 03:19:09,396 - __main__ - INFO - ================================================================================
+2026-11-18 03:19:09,396 - __main__ - INFO - FOUR-SYSTEM INTEGRATED EXPERIMENT - 4K TOKENS
+2026-11-18 03:19:09,396 - __main__ - INFO - ================================================================================
+2026-11-18 03:19:09,396 - __main__ - INFO - 
+[PHASE 1] Stability Baseline
+/workspaces/Recall-/deeptrace/four_system_orchestrator.py:323: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat() + "Z",
+2026-11-18 03:19:09,498 - __main__ - INFO - 
+[PHASE 2] Load Zeta Model
+2026-11-18 03:19:09,498 - __main__ - INFO - Loading HuggingFace SmolLM2-360M-Instruct...
+2026-11-18 03:19:11,648 - httpx2 - INFO - HTTP Request: GET https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-360M-Instruct/tree/a10cc1512eabd3dde888204e902eca88bddb4951/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-11-18 03:19:11,680 - httpx2 - INFO - HTTP Request: GET https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-360M-Instruct/tree/a10cc1512eabd3dde888204e902eca88bddb4951?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-11-18 03:19:11,850 - __main__ - INFO - ✓ Tokenizer loaded (vocab_size=49152)
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:33,  3.08it/s]Loading weights:  30%|██▉       | 86/290 [00:00<00:00, 260.71it/s]Loading weights:  47%|████▋     | 136/290 [00:00<00:00, 289.02it/s]Loading weights:  62%|██████▏   | 179/290 [00:00<00:00, 293.70it/s]Loading weights:  75%|███████▍  | 217/290 [00:00<00:00, 306.70it/s]Loading weights:  88%|████████▊ | 254/290 [00:00<00:00, 299.90it/s]Loading weights: 100%|██████████| 290/290 [00:01<00:00, 278.27it/s]
+2026-11-18 03:19:13,393 - httpx2 - INFO - HTTP Request: HEAD https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct/resolve/a10cc1512eabd3dde888204e902eca88bddb4951/custom_generate/generate.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-11-18 03:19:13,393 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-11-18 03:19:13,407 - __main__ - INFO - ✓ Model loaded (params=361,821,120, architecture=LlamaForCausalLM)
+/workspaces/Recall-/deeptrace/four_system_orchestrator.py:323: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat() + "Z",
+2026-11-18 03:19:13,407 - __main__ - INFO - 
+[PHASE 3] Generate Test Dataset (MathMesh validation)
+2026-11-18 03:19:13,407 - __main__ - INFO - Generated 5 deterministic facts
+2026-11-18 03:19:13,407 - __main__ - INFO - 
+[PHASE 4] MathMesh Mathematical Operations
+2026-11-18 03:19:13,407 - __main__ - INFO - Executing MathMesh base conversions...
+2026-11-18 03:19:13,408 - __main__ - INFO - ✓ MathMesh: 12 conversions, 8 verified
+2026-11-18 03:19:13,408 - __main__ - INFO - 
+[PHASE 5] Issue Retrieval Queries (RAG Governor)
+2026-11-18 03:19:13,408 - deeptrace.rag_governor - INFO - Query issued: QUERY-FOUR_SYSTEM_4K_20261118_031909-0001
+2026-11-18 03:19:13,408 - deeptrace.rag_governor - INFO - Query issued: QUERY-FOUR_SYSTEM_4K_20261118_031909-0002
+2026-11-18 03:19:13,408 - deeptrace.rag_governor - INFO - Query issued: QUERY-FOUR_SYSTEM_4K_20261118_031909-0003
+2026-11-18 03:19:13,408 - __main__ - INFO - 
+[PHASE 6] Zeta Native Inference (4K tokens)
+2026-11-18 03:19:13,433 - __main__ - INFO - Input token stream: 1841 tokens
+2026-11-18 03:19:35,407 - __main__ - INFO - ✓ Zeta inference: 21180.99ms | Tokens: 1841 | Output: torch.Size([1, 1841, 49152])
+2026-11-18 03:19:35,407 - __main__ - INFO - 
+[PHASE 7] RAG Retrieval Execution (Native-Only / Audit Mode)
+2026-11-18 03:19:35,407 - deeptrace.rag_governor - INFO - Executing retrieval for QUERY-FOUR_SYSTEM_4K_20261118_031909-0001 in native_only mode
+2026-11-18 03:19:35,407 - deeptrace.rag_governor - INFO - Retrieval complete: QUERY-FOUR_SYSTEM_4K_20261118_031909-0001 | Evidence=False | Source=none
+2026-11-18 03:19:35,407 - deeptrace.rag_governor - INFO - Integration recorded for QUERY-FOUR_SYSTEM_4K_20261118_031909-0001: integrated=False, should_integrate=False
+2026-11-18 03:19:35,407 - deeptrace.rag_governor - INFO - Executing retrieval for QUERY-FOUR_SYSTEM_4K_20261118_031909-0002 in native_only mode
+2026-11-18 03:19:35,407 - deeptrace.rag_governor - INFO - Retrieval complete: QUERY-FOUR_SYSTEM_4K_20261118_031909-0002 | Evidence=False | Source=none
+2026-11-18 03:19:35,407 - deeptrace.rag_governor - INFO - Integration recorded for QUERY-FOUR_SYSTEM_4K_20261118_031909-0002: integrated=False, should_integrate=False
+2026-11-18 03:19:35,407 - deeptrace.rag_governor - INFO - Executing retrieval for QUERY-FOUR_SYSTEM_4K_20261118_031909-0003 in native_only mode
+2026-11-18 03:19:35,408 - deeptrace.rag_governor - INFO - Retrieval complete: QUERY-FOUR_SYSTEM_4K_20261118_031909-0003 | Evidence=False | Source=none
+2026-11-18 03:19:35,408 - deeptrace.rag_governor - INFO - Integration recorded for QUERY-FOUR_SYSTEM_4K_20261118_031909-0003: integrated=False, should_integrate=False
+2026-11-18 03:19:35,408 - __main__ - INFO - 
+[PHASE 8] Stability Monitoring During Inference
+2026-11-18 03:19:35,509 - deeptrace.stability_toolkit - INFO - Stability assessment: monitor_memory | Memory usage at 79.3%; consider monitoring.
+2026-11-18 03:19:35,509 - __main__ - INFO - ✓ Stability recommendation: monitor_memory
+2026-11-18 03:19:35,509 - __main__ - INFO - 
+[PHASE 9] Cross-System Telemetry Aggregation
+2026-11-18 03:19:35,611 - __main__ - INFO - 
+[PHASE 10] Zeta Cache and Numerical Verification
+2026-11-18 03:19:36,407 - __main__ - INFO - ✓ Numerical checks passed: True
+/workspaces/Recall-/deeptrace/four_system_orchestrator.py:240: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "end_timestamp": datetime.utcnow().isoformat() + "Z",
+2026-11-18 03:19:36,443 - __main__ - INFO - Results saved to deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_four_system_results.json
+2026-11-18 03:19:36,444 - __main__ - INFO - Event log saved to deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_four_system_events.jsonl
+2026-11-18 03:19:36,445 - deeptrace.mathmesh_governor - INFO - Telemetry saved to deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_mathmesh_telemetry.jsonl
+2026-11-18 03:19:36,447 - deeptrace.stability_toolkit - INFO - Stability telemetry saved to deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_stability_telemetry.jsonl
+2026-11-18 03:19:36,447 - deeptrace.rag_governor - INFO - Audit log saved to deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_rag_audit.jsonl
+2026-11-18 03:19:36,447 - deeptrace.rag_governor - INFO - Retrieval results saved to deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_rag_results.jsonl
+2026-11-18 03:19:36,448 - __main__ - INFO - 
+================================================================================
+2026-11-18 03:19:36,448 - __main__ - INFO - FOUR-SYSTEM EXPERIMENT COMPLETE
+2026-11-18 03:19:36,448 - __main__ - INFO - ================================================================================
+2026-11-18 03:19:36,448 - __main__ - INFO - Experiment ID: FOUR_SYSTEM_4K_20261118_031909
+2026-11-18 03:19:36,448 - __main__ - INFO - Results: deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_four_system_results.json
+2026-11-18 03:19:36,448 - __main__ - INFO - Event Log: deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_four_system_events.jsonl
+2026-11-18 03:19:36,448 - __main__ - INFO - Telemetry Files:
+2026-11-18 03:19:36,448 - __main__ - INFO -   - mathmesh: deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_mathmesh_telemetry.jsonl
+2026-11-18 03:19:36,448 - __main__ - INFO -   - stability: deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_stability_telemetry.jsonl
+2026-11-18 03:19:36,448 - __main__ - INFO -   - rag_audit: deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_rag_audit.jsonl
+2026-11-18 03:19:36,448 - __main__ - INFO -   - rag_results: deeptrace/results/FOUR_SYSTEM_4K_20261118_031909_rag_results.jsonl
+2026-11-18 03:19:36,448 - __main__ - INFO - 
+Coordination Status: ✓ COORDINATED
+2026-11-18 03:19:36,448 - __main__ - INFO - All systems active: True
+2026-11-18 03:19:36,448 - __main__ - INFO - 
+✓ Experiment complete

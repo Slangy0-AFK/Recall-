@@ -25,18 +25,30 @@ class RetrievalDataset:
         """Initialize with optional tokenizer for accurate position tracking."""
         self.tokenizer = tokenizer
         self.tokens: list[int] = []
+        self.text_parts: list[str] = []  # Track original text for reconstruction
         self.token_positions: list[TokenPosition] = []
         self.fact_positions: dict[str, int] = {}  # fact_id -> absolute_position
         self.queries: list[dict] = []
 
-    def add_fact_at_position(self, fact: Fact, context_before: list[str] = None) -> int:
+    def add_fact_at_position(self, fact: Fact, context_before: list[str] = None, position_tokens: int = None) -> int:
         """
         Add a fact to the stream at a specific position.
+
+        Args:
+            fact: The fact to add
+            context_before: Optional context text before the fact
+            position_tokens: If provided, pad with filler to reach this position
 
         Returns the absolute token position of the fact content start.
         """
         if context_before is None:
             context_before = []
+
+        # Pad to position if requested
+        if position_tokens is not None and len(self.tokens) < position_tokens:
+            padding_needed = position_tokens - len(self.tokens)
+            padding_text = " ".join([f"filler{i}" for i in range(padding_needed)])
+            self._add_text(padding_text, is_fact=False)
 
         # Add context before the fact
         for context_text in context_before:
@@ -53,6 +65,8 @@ class RetrievalDataset:
 
     def _add_text(self, text: str, is_fact: bool = False, fact_id: Optional[str] = None) -> None:
         """Add text to the stream, tracking positions."""
+        self.text_parts.append(text)
+        
         if self.tokenizer:
             # Use actual tokenizer for accurate position tracking
             token_ids = self.tokenizer.encode(text, add_special_tokens=False)
@@ -135,3 +149,8 @@ class RetrievalDataset:
     def __len__(self) -> int:
         """Return total number of tokens in the stream."""
         return len(self.tokens)
+
+    def construct_full_text(self) -> str:
+        """Reconstruct the full text from added parts."""
+        return " ".join(self.text_parts)
+
