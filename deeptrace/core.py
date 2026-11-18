@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
 import random
 import string
@@ -16,6 +16,8 @@ class Tokenizer(Protocol):
 
 class NativeModel(Protocol):
     """A thin adapter over the existing model execution and cache implementation."""
+
+    def set_seed(self, seed: int) -> None: ...
 
     def reset(self) -> None: ...
 
@@ -33,6 +35,7 @@ class NeedleCase:
     case_id: str
     category: str
     control_type: str
+    control_group: str | None
     context: str
     question: str
     expected: str | None
@@ -48,6 +51,9 @@ class QuestionResult:
     case_id: str
     category: str
     control_type: str
+    control_group: str | None
+    control_passed: bool | None
+    validity: str
     target_distance: int
     distance_tokens: int | None
     fact_position: int | None
@@ -60,6 +66,7 @@ class QuestionResult:
     latency_ms: float
     cache_metadata: Mapping[str, Any]
     fact_retained: bool | None
+    fact_evicted: bool | None
 
 
 @dataclass(frozen=True)
@@ -76,31 +83,58 @@ class ExperimentResult:
     def summary(self) -> dict[str, Any]:
         total = len(self.questions)
         correct = sum(result.correct for result in self.questions)
+        retrievals = [result for result in self.questions if result.category != "positive-control"]
+        valid_retrievals = [result for result in retrievals if result.validity == "valid"]
+        positive_controls = [
+            result for result in self.questions if result.category == "positive-control"
+        ]
         negative = [result for result in self.questions if result.control_type == "negative"]
         by_distance: dict[str, dict[str, int | float]] = {}
         by_position: dict[str, dict[str, int | float]] = {}
-        for result in self.questions:
-            if result.distance_tokens is not None:
+        for result in valid_retrievals:
+            if result.distance_tokens is not None and result.control_type != "negative":
                 _add_metric(by_distance, str(result.distance_tokens), result.correct)
-            _add_metric(by_position, result.insertion_position, result.correct)
+            if result.control_type != "negative":
+                _add_metric(by_position, result.insertion_position, result.correct)
+        false_positives = sum(result.false_positive for result in negative)
         return {
             "question_count": total,
             "correct_count": correct,
-            "exact_match_accuracy": correct / total if total else 0.0,
+            "retrieval_question_count": len(retrievals),
+            "valid_retrieval_count": len(valid_retrievals),
+            "inconclusive_retrieval_count": len(retrievals) - len(valid_retrievals),
+            "raw_retrieval_accuracy": (
+                sum(result.correct for result in retrievals) / len(retrievals)
+                if retrievals
+                else 0.0
+            ),
+            "exact_match_accuracy": (
+                sum(result.correct for result in valid_retrievals) / len(valid_retrievals)
+                if valid_retrievals
+                else 0.0
+            ),
+            "positive_control_count": len(positive_controls),
+            "positive_control_accuracy": (
+                sum(result.correct for result in positive_controls) / len(positive_controls)
+                if positive_controls
+                else None
+            ),
             "negative_control_count": len(negative),
             "negative_control_accuracy": (
                 sum(result.correct for result in negative) / len(negative) if negative else None
             ),
-            "false_positive_count": sum(result.false_positive for result in negative),
+            "false_positive_count": false_positives,
             "false_positive_rate": (
-                sum(result.false_positive for result in negative) / len(negative)
+                false_positives / len(negative)
                 if negative
                 else None
             ),
             "accuracy_by_distance": by_distance,
             "accuracy_by_insertion_position": by_position,
             "mean_retrieval_latency_ms": (
-                sum(result.latency_ms for result in self.questions) / total if total else 0.0
+                sum(result.latency_ms for result in retrievals) / len(retrievals)
+                if retrievals
+                else 0.0
             ),
         }
 
@@ -125,6 +159,7 @@ def build_needle_case(
     target_distance: int,
     insertion_position: str = "early",
     case_id: str = "needle-0",
+    control_group: str | None = None,
 ) -> NeedleCase:
     """Create one deterministic synthetic retrieval prompt at a tokenizer-measured distance."""
     if target_distance < 1:
@@ -132,7 +167,7 @@ def build_needle_case(
     if insertion_position not in {"early", "middle", "late"}:
         raise ValueError("insertion_position must be early, middle, or late")
 
-    rng = random.Random(f"{seed}:{case_id}:{target_distance}:{insertion_position}")
+    rng = random.Random(f"{seed}:{control_group or case_id}")
     key = f"PROJECT-{rng.randrange(10**8):08d}"
     value = "".join(rng.choices(string.ascii_uppercase + string.digits, k=10))
     fact = f"The unique access code for project {key} is {value}."
@@ -147,6 +182,7 @@ def build_needle_case(
         case_id=case_id,
         category="needle",
         control_type="positive",
+        control_group=control_group,
         context=context,
         question=f"What is the unique access code for project {key}? Answer with only the code.",
         expected=value,
@@ -158,12 +194,41 @@ def build_needle_case(
     )
 
 
+def build_positive_control_case(
+    tokenizer: Tokenizer,
+    *,
+    seed: int,
+    case_id: str = "positive-control-0",
+    control_group: str | None = None,
+) -> NeedleCase:
+    """Create a short-prompt known-answer control for a retrieval condition."""
+    rng = random.Random(f"{seed}:{control_group or case_id}")
+    key = f"PROJECT-{rng.randrange(10**8):08d}"
+    value = "".join(rng.choices(string.ascii_uppercase + string.digits, k=10))
+    fact = f"The unique access code for project {key} is {value}."
+    return NeedleCase(
+        case_id=case_id,
+        category="positive-control",
+        control_type="positive",
+        control_group=control_group,
+        context=fact,
+        question=f"What is the unique access code for project {key}? Answer with only the code.",
+        expected=value,
+        fact_position=0,
+        query_position=len(tokenizer.encode(fact)),
+        distance_tokens=len(tokenizer.encode(fact)),
+        target_distance=0,
+        insertion_position="short-control",
+    )
+
+
 def build_negative_case(
     tokenizer: Tokenizer,
     *,
     seed: int,
     target_distance: int,
     case_id: str = "negative-0",
+    control_group: str | None = None,
 ) -> NeedleCase:
     """Create a negative control whose queried key is deliberately absent."""
     if target_distance < 1:
@@ -179,6 +244,7 @@ def build_negative_case(
         case_id=case_id,
         category="needle",
         control_type="negative",
+        control_group=control_group,
         context=context,
         question=(
             f"What is the unique access code for project {absent_key}? "
@@ -210,16 +276,27 @@ def generate_needle_cases(
     for distance in distances:
         if distance < 1:
             raise ValueError("distances must contain positive token counts")
-        for position in positions:
-            for replicate in range(cases_per_condition):
+        for replicate in range(cases_per_condition):
+            control_group = f"{distance}-{replicate}"
+            cases.append(
+                build_positive_control_case(
+                    tokenizer,
+                    seed=seed + replicate,
+                    case_id=f"positive-control-{index}",
+                    control_group=control_group,
+                )
+            )
+            index += 1
+            for position in positions:
                 case_id = f"needle-{index}"
                 cases.append(
                     build_needle_case(
                         tokenizer,
-                        seed=seed,
+                        seed=seed + replicate,
                         target_distance=distance,
                         insertion_position=position,
                         case_id=case_id,
+                        control_group=control_group,
                     )
                 )
                 index += 1
@@ -230,6 +307,7 @@ def generate_needle_cases(
                             seed=seed + replicate,
                             target_distance=distance,
                             case_id=f"negative-{index}",
+                            control_group=control_group,
                         )
                     )
                     index += 1
@@ -244,11 +322,28 @@ def evaluate(
     seed: int = 0,
     dataset_id: str = "synthetic-needles",
     tokenizer_metadata: Mapping[str, Any] | None = None,
+    allow_extended: bool = False,
 ) -> ExperimentResult:
     """Run cases through the supplied native model adapter without external retrieval."""
+    if not allow_extended and any(case.target_distance > 16_384 for case in cases):
+        raise ValueError(
+            "Distances above 16,384 tokens require explicit allow_extended=True approval"
+        )
+    model.set_seed(seed)
     started_at = _utc_now()
     results: list[QuestionResult] = []
     for case in cases:
+        actual_query_position = len(tokenizer.encode(case.context))
+        if actual_query_position != case.query_position:
+            raise ValueError(
+                f"Tokenizer position mismatch for {case.case_id}: "
+                f"recorded {case.query_position}, measured {actual_query_position}"
+            )
+        if (
+            case.fact_position is not None
+            and case.distance_tokens != actual_query_position - case.fact_position
+        ):
+            raise ValueError(f"Inconsistent fact/query positions for {case.case_id}")
         model.reset()
         model.prefill(case.context)
         cache = dict(model.cache_metadata())
@@ -262,6 +357,9 @@ def evaluate(
                 case_id=case.case_id,
                 category=case.category,
                 control_type=case.control_type,
+                control_group=case.control_group,
+                control_passed=None,
+                validity="valid",
                 target_distance=case.target_distance,
                 distance_tokens=case.distance_tokens,
                 fact_position=case.fact_position,
@@ -274,8 +372,32 @@ def evaluate(
                 latency_ms=latency_ms,
                 cache_metadata=cache,
                 fact_retained=retained,
+                fact_evicted=None if retained is None else not retained,
             )
         )
+    controls = {
+        result.control_group: result.correct
+        for result in results
+        if result.category == "positive-control" and result.control_group is not None
+    }
+    results = [
+        replace(
+            result,
+            control_passed=(
+                result.correct
+                if result.category == "positive-control"
+                else controls.get(result.control_group)
+            ),
+            validity=(
+                "inconclusive"
+                if result.category != "positive-control"
+                and result.control_group is not None
+                and not controls.get(result.control_group, False)
+                else "valid"
+            ),
+        )
+        for result in results
+    ]
     return ExperimentResult(
         configuration="native_zeta",
         seed=seed,

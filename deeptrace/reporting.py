@@ -25,6 +25,9 @@ def write_reports(result: ExperimentResult, output_dir: str | Path) -> None:
                 "case_id",
                 "category",
                 "control_type",
+                "control_group",
+                "control_passed",
+                "validity",
                 "target_distance",
                 "distance_tokens",
                 "fact_position",
@@ -36,6 +39,7 @@ def write_reports(result: ExperimentResult, output_dir: str | Path) -> None:
                 "false_positive",
                 "latency_ms",
                 "fact_retained",
+                "fact_evicted",
                 "cache_metadata",
             ),
         )
@@ -61,7 +65,10 @@ def write_reports(result: ExperimentResult, output_dir: str | Path) -> None:
         "## Results",
         "",
         f"- Questions: {summary['question_count']}",
+        f"- Valid retrieval questions: {summary['valid_retrieval_count']}",
+        f"- Inconclusive retrieval questions: {summary['inconclusive_retrieval_count']}",
         f"- Exact-match accuracy: {summary['exact_match_accuracy']:.3f}",
+        f"- Positive-control accuracy: {summary['positive_control_accuracy']}",
         f"- Mean retrieval latency: {summary['mean_retrieval_latency_ms']:.3f} ms",
         f"- False positives: {summary['false_positive_count']}",
         "",
@@ -84,7 +91,8 @@ def write_reports(result: ExperimentResult, output_dir: str | Path) -> None:
             "",
             "Only the supplied native model adapter is measured. Cache retention is reported "
             "only when the adapter exposes position metadata. These results do not establish "
-            "retention beyond the active cache or evaluate external-memory recovery.",
+            "retention beyond the active cache or evaluate external-memory recovery. Long-distance "
+            "retrieval results are marked inconclusive when their short-prompt positive control fails.",
             "",
         ]
     )

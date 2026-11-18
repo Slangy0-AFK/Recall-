@@ -6,6 +6,7 @@ from .core import (
     Tokenizer,
     build_negative_case,
     build_needle_case,
+    build_positive_control_case,
     evaluate,
     generate_needle_cases,
 )
@@ -19,6 +20,7 @@ __all__ = [
     "Tokenizer",
     "build_negative_case",
     "build_needle_case",
+    "build_positive_control_case",
     "evaluate",
     "generate_needle_cases",
     "write_reports",

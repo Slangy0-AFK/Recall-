@@ -14,7 +14,10 @@ per-question native-model evaluation, cache-position observations when provided
 by the adapter, and JSON, JSONL, CSV, and Markdown artifacts.
 
 The harness labels results `native_zeta` and never adds external retrieval.
-It does not infer cache eviction when the adapter omits position metadata.
+Short-prompt known-answer controls are paired with longer cases; a failed
+control marks its associated retrieval cases inconclusive. Runs above 16,384
+tokens require `evaluate(..., allow_extended=True)`. It does not infer cache
+eviction when the adapter omits position metadata.
 Multi-hop, aggregation, controlled-retention, and external-retrieval comparison
 experiments are not implemented yet; they must remain separately identified
 when added.
@@ -26,6 +29,10 @@ adapt the existing model execution path to the following synchronous interface:
 
 ```python
 class ZetaAdapter:
+    def set_seed(self, seed):
+        # Configure the existing generation path's random seed.
+        ...
+
     def reset(self):
         # Reset the model's normal per-example execution state.
         ...
@@ -50,7 +57,9 @@ class ZetaAdapter:
 The adapter must not use a separate inference engine or hidden/external memory
 for a native run. `cache_metadata` is observational: the harness records it
 after prefill and before asking the question. A retained/evicted result is only
-reported when relevant position metadata is available.
+reported when relevant position metadata is available. The adapter applies the
+experiment seed to the existing generation path; DeepTrace does not change
+sampling configuration beyond setting that seed.
 
 ## Run a diagnostic experiment
 
@@ -74,6 +83,9 @@ result = evaluate(
 )
 write_reports(result, "deeptrace-results")
 ```
+
+Pass `allow_extended=True` to `evaluate` only after explicitly approving an
+extended run above 16,384 tokens.
 
 Generated cases include early, middle, and late insertion positions by default.
 Token distances are measured with `Tokenizer.encode`; a tokenizer implementation
