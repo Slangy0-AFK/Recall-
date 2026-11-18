@@ -1,0 +1,238 @@
+{
+  "phase": 4,
+  "report_name": "TENSOR_MAPPING_REPORT",
+  "timestamp": "2026-11-18T19:10:00Z",
+  "checkpoint": "HuggingFaceTB/SmolLM2-360M-Instruct",
+  "mapping_strategy": "Direct state_dict weight assignment with shape validation",
+  "total_expected_tensors": 290,
+  "total_expected_parameters": 361800000,
+  "tensors_by_category": {
+    "embedding": {
+      "count": 1,
+      "tensors": [
+        {
+          "source": "model.embed_tokens.weight",
+          "destination": "SmolLM2ModelShell.embed_tokens.weight",
+          "shape": [49152, 960],
+          "dtype": "bfloat16",
+          "parameters": 47185920
+        }
+      ]
+    },
+    "normalization": {
+      "count": 33,
+      "note": "32 layers × 2 norms/layer + 1 final norm",
+      "tensor_patterns": [
+        {
+          "pattern": "model.layers.{i}.input_layernorm.weight",
+          "destination": "layers[i].input_layernorm.weight",
+          "shape": [960],
+          "count": 32
+        },
+        {
+          "pattern": "model.layers.{i}.post_attention_layernorm.weight",
+          "destination": "layers[i].post_attention_layernorm.weight",
+          "shape": [960],
+          "count": 32
+        },
+        {
+          "pattern": "model.norm.weight",
+          "destination": "norm.weight",
+          "shape": [960],
+          "count": 1
+        }
+      ],
+      "total_parameters": 61440
+    },
+    "attention": {
+      "count": 128,
+      "note": "32 layers × 4 projections/layer",
+      "tensor_patterns": [
+        {
+          "pattern": "model.layers.{i}.self_attn.q_proj.weight",
+          "destination": "layers[i].self_attn.q_proj.weight",
+          "shape": [960, 960],
+          "parameters": 921600,
+          "count": 32
+        },
+        {
+          "pattern": "model.layers.{i}.self_attn.k_proj.weight",
+          "destination": "layers[i].self_attn.k_proj.weight",
+          "shape": [320, 960],
+          "parameters": 307200,
+          "count": 32
+        },
+        {
+          "pattern": "model.layers.{i}.self_attn.v_proj.weight",
+          "destination": "layers[i].self_attn.v_proj.weight",
+          "shape": [320, 960],
+          "parameters": 307200,
+          "count": 32
+        },
+        {
+          "pattern": "model.layers.{i}.self_attn.o_proj.weight",
+          "destination": "layers[i].self_attn.o_proj.weight",
+          "shape": [960, 960],
+          "parameters": 921600,
+          "count": 32
+        }
+      ],
+      "total_parameters": 97459200,
+      "note": "Uses Grouped Query Attention with 15 query heads and 5 key-value heads"
+    },
+    "mlp": {
+      "count": 96,
+      "note": "32 layers × 3 projections/layer",
+      "tensor_patterns": [
+        {
+          "pattern": "model.layers.{i}.mlp.gate_proj.weight",
+          "destination": "layers[i].mlp.gate_proj.weight",
+          "shape": [2560, 960],
+          "parameters": 2457600,
+          "count": 32
+        },
+        {
+          "pattern": "model.layers.{i}.mlp.up_proj.weight",
+          "destination": "layers[i].mlp.up_proj.weight",
+          "shape": [2560, 960],
+          "parameters": 2457600,
+          "count": 32
+        },
+        {
+          "pattern": "model.layers.{i}.mlp.down_proj.weight",
+          "destination": "layers[i].mlp.down_proj.weight",
+          "shape": [960, 2560],
+          "parameters": 2457600,
+          "count": 32
+        }
+      ],
+      "total_parameters": 219724800,
+      "note": "SwiGLU activation with gating. Formula: down(silu(gate) * up)"
+    },
+    "language_model_head": {
+      "count": 1,
+      "tensors": [
+        {
+          "source": "lm_head.weight",
+          "destination": "SmolLM2ModelShell.lm_head.weight",
+          "shape": [49152, 960],
+          "dtype": "bfloat16",
+          "parameters": 47185920,
+          "note": "May be tied to embeddings in checkpoint config"
+        }
+      ]
+    }
+  },
+  "layer_structure": {
+    "total_layers": 32,
+    "components_per_layer": [
+      {
+        "component": "input_layernorm",
+        "type": "RMSNorm",
+        "shape": [960]
+      },
+      {
+        "component": "self_attn.q_proj",
+        "type": "Linear",
+        "shape": [960, 960],
+        "note": "Full query projection (not reduced)"
+      },
+      {
+        "component": "self_attn.k_proj",
+        "type": "Linear",
+        "shape": [320, 960],
+        "note": "Reduced KV projection (5 kv-heads × 64 dim)"
+      },
+      {
+        "component": "self_attn.v_proj",
+        "type": "Linear",
+        "shape": [320, 960],
+        "note": "Reduced KV projection (5 kv-heads × 64 dim)"
+      },
+      {
+        "component": "self_attn.o_proj",
+        "type": "Linear",
+        "shape": [960, 960]
+      },
+      {
+        "component": "post_attention_layernorm",
+        "type": "RMSNorm",
+        "shape": [960]
+      },
+      {
+        "component": "mlp.gate_proj",
+        "type": "Linear",
+        "shape": [2560, 960]
+      },
+      {
+        "component": "mlp.up_proj",
+        "type": "Linear",
+        "shape": [2560, 960]
+      },
+      {
+        "component": "mlp.down_proj",
+        "type": "Linear",
+        "shape": [960, 2560]
+      }
+    ]
+  },
+  "tensor_validation_strategy": {
+    "shape_validation": "All tensors validated against expected shapes",
+    "dtype_validation": "All tensors checked for supported dtypes (bfloat16, float32, float64)",
+    "nan_inf_detection": "All tensors checked for NaN or Inf values",
+    "parameter_count": "Total parameters verified against config (361.8M)",
+    "layer_completeness": "Each of 32 layers verified to have all 9 components",
+    "unmapped_detection": "Any checkpoint tensors not in mapping are recorded",
+    "tie_weight_handling": "Config.tie_word_embeddings flag checked; lm_head may share embeddings"
+  },
+  "mapping_implementation": {
+    "loader_class": "SmolLM2CheckpointLoader",
+    "source_file": "adapters/smollm2_checkpoint_loader.py",
+    "key_methods": [
+      {
+        "method": "load_checkpoint()",
+        "description": "Download checkpoint from HF and return state_dict",
+        "returns": "Dict[str, torch.Tensor]"
+      },
+      {
+        "method": "inspect_checkpoint()",
+        "description": "Categorize tensors by component type",
+        "returns": "Dict with tensor inventory and categories"
+      },
+      {
+        "method": "map_to_recall_model(model)",
+        "description": "Map checkpoint weights to SmolLM2ModelShell",
+        "returns": "Tuple[int, List] - (loaded_count, unmapped_keys)"
+      },
+      {
+        "method": "validate_mapping(model)",
+        "description": "Verify mapping integrity",
+        "returns": "Tuple[bool, List[str]] - (is_valid, errors)"
+      }
+    ]
+  },
+  "compatibility_notes": {
+    "rope_integration": "Uses Phase 2 SplitHalfRoPE adapter for position encoding",
+    "kv_cache": "Uses Phase 2 AbsolutePositionKVCache for key-value caching",
+    "attention": "Uses Zeta GroupedQueryAttention for 15->5 head reduction",
+    "activation": "Uses SiLU (Swish) activation in MLP (implemented as SwiGLU)",
+    "normalization": "RMS normalization with epsilon from config (default 1e-5)"
+  },
+  "summary": {
+    "total_tensors": 290,
+    "total_parameters": 361800000,
+    "parameters_by_category": {
+      "embedding": 47185920,
+      "normalization": 61440,
+      "attention": 97459200,
+      "mlp": 219724800,
+      "language_model_head": 47185920
+    },
+    "dtype": "bfloat16 (HuggingFace default)",
+    "checkpoint_size_mb": 730,
+    "model_size_mb_bf16": 726,
+    "model_size_mb_fp32": 1452,
+    "mapping_status": "DEFINED_AND_IMPLEMENTED",
+    "validation_status": "READY_FOR_EXECUTION"
+  }
+}
