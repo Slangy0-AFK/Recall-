@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "status_vocabulary": [
+    "PASS",
+    "FAIL",
+    "PARTIAL",
+    "BLOCKED",
+    "NOT TESTED",
+    "NOT APPLICABLE"
+  ],
+  "systems": {
+    "zeta_scaling_toolkit": {
+      "repository": "zeta-scaling-toolkit",
+      "required_public_capabilities": [
+        "NonCollapsingAttention",
+        "StreamingKVCache"
+      ],
+      "supported_checks": [
+        "component attention output shape and finiteness",
+        "streaming cache absolute positions and next position"
+      ],
+      "unsupported_until_upstream_contract_exists": [
+        "pinned Hugging Face model initialization",
+        "tokenizer discovery",
+        "model inference"
+      ],
+      "future_public_runner_contract": "adapters.zeta_adapter.ZetaInferenceRunner",
+      "future_result_type": "adapters.zeta_adapter.ZetaInferenceResult",
+      "provenance": [
+        "repository commit",
+        "package version",
+        "loaded module path"
+      ]
+    },
+    "mathmesh_governor": {
+      "repository": "mathmesh-governor",
+      "supported_local_api": "governor/shared/mathChecks.ts:evaluateVoteParity",
+      "supported_http_apis": [
+        "GET /api/health",
+        "POST /api/functions/recordAudit"
+      ],
+      "audit_event_types": [
+        "GATE_PASS",
+        "GATE_HALT",
+        "CACHE_HIT",
+        "CACHE_STORE",
+        "OUTPUT_ATTRIBUTED",
+        "PIPELINE_COMPLETE"
+      ],
+      "limitations": [
+        "No radix-conversion or numeric-round-trip API is established by the pinned checkout.",
+        "Audit writes require an explicitly configured admin-authenticated service."
+      ]
+    },
+    "system_stability_toolkit": {
+      "repository": "System-Stability-Toolkit",
+      "supported_api": "crash_fix.py <scale> --json",
+      "resource_measurement_owner": "Recall via psutil",
+      "recommendations_applied": false,
+      "unsupported_capabilities": [
+        "physical cooling",
+        "temperature monitoring",
+        "automatic throttling"
+      ]
+    },
+    "deterministic_rag_governor": {
+      "repository": "deterministic-rag-governor",
+      "supported_http_apis": [
+        "GET /health",
+        "GET /ready",
+        "POST /govern"
+      ],
+      "govern_operation": "combined retrieval, generation, spend, and audit side effects",
+      "unsupported_capabilities": [
+        "metadata-only audit endpoint",
+        "separate retrieval-only endpoint",
+        "separate generation-only endpoint",
+        "source identifiers in governed response"
+      ],
+      "write_opt_in_environment_variable": "RECALL_ALLOW_RAG_GOVERN"
+    }
+  }
+}

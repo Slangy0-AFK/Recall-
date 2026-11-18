@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "experiment_id_owner": "Recall",
+  "execution_order": "serial",
+  "native_shared_event_contracts": {
+    "zeta_scaling_toolkit": false,
+    "mathmesh_governor": false,
+    "system_stability_toolkit": false,
+    "deterministic_rag_governor": false
+  },
+  "native_event_record": {
+    "required_fields": [
+      "experiment_id",
+      "system",
+      "component",
+      "timestamp",
+      "operation",
+      "status"
+    ],
+    "accepted_statuses": [
+      "PASS",
+      "FAIL",
+      "PARTIAL",
+      "BLOCKED",
+      "NOT TESTED",
+      "NOT APPLICABLE"
+    ],
+    "experiment_id_must_match_recall": true,
+    "system_must_match_adapter": true
+  },
+  "integration_gate_requirements": [
+    "all four system adapters return PASS",
+    "each result records the pinned repository revision",
+    "all four systems emit native events correlated to the shared experiment ID",
+    "no missing evidence is converted to PASS"
+  ],
+  "side_effect_gates": {
+    "mathmesh_audit_write": "RECALL_ALLOW_REMOTE_AUDIT_WRITES=1",
+    "rag_govern_request": "RECALL_ALLOW_RAG_GOVERN=1 plus RECALL_RAG_AGENT_ID and RECALL_RAG_QUERY",
+    "stability_recommendation_application": "not supported by Recall",
+    "zeta_inference_settings": "not modified by Recall"
+  },
+  "overall_qualification_policy": "BLOCKED unless every required live integration gate passes"
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "experiment_id_prefix": "recall-qualification",
+  "repository_inspection": {
+    "recall_branch": "copilot/zeta-deeptrace-initial-setup",
+    "recall_initial_working_tree": "pre-existing task changes present; preserved",
+    "recall_license": "MIT"
+  },
+  "model_reference": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+    "precision": "CPU FP32",
+    "native_context_tokens": 8192,
+    "historical_workload_tokens": 100000,
+    "historical_final_token_position": 99999,
+    "historical_throughput_tokens_per_second": 10.7199,
+    "historical_wall_seconds": 9636.7,
+    "historical_checkpoints": "56/56 passed",
+    "target_throughput_tokens_per_second": 21.4398,
+    "historical_source": "User-provided reference; original evidence was not opened or modified"
+  },
+  "qualification_probe": {
+    "zeta_attention_sequence_length": 32,
+    "zeta_head_count": 2,
+    "zeta_head_dimension": 16,
+    "stability_advisory_workload_scale": 32
+  },
+  "dependencies": {
+    "python_minimum": "3.10",
+    "torch": "2.15.0",
+    "psutil": "7.2.2",
+    "pytest": "9.2.0",
+    "zeta_scaling_toolkit": "0.5.1"
+  },
+  "repositories": {
+    "zeta-scaling-toolkit": {
+      "url": "https://github.com/Slangy0-AFK/zeta-scaling-toolkit",
+      "default_branch": "main",
+      "license": "MIT",
+      "revision": "67d1a34a1ac35d9ea7894ffd9354d5e4e5b7d36b"
+    },
+    "mathmesh-governor": {
+      "url": "https://github.com/Slangy0-AFK/mathmesh-governor",
+      "default_branch": "main",
+      "license": "MIT",
+      "revision": "4ef77424b7ef4c5b131f558e85fa1eae24d890ab"
+    },
+    "System-Stability-Toolkit": {
+      "url": "https://github.com/Slangy0-AFK/System-Stability-Toolkit",
+      "default_branch": "main",
+      "license": "MIT",
+      "revision": "9e7a254ee9607b23ae35b756110d3713ad0dac45"
+    },
+    "deterministic-rag-governor": {
+      "url": "https://github.com/Slangy0-AFK/deterministic-rag-governor",
+      "default_branch": "main",
+      "license": "MIT",
+      "revision": "7eee42bc77757e8a23138b9b65c8a1072c88ca9d"
+    }
+  }
+}
