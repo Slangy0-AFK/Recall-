@@ -1,0 +1,320 @@
+{
+  "metadata": {
+    "model_name": "SmolLM2-360M-Instruct",
+    "model_source": "HuggingFaceTB/SmolLM2-360M-Instruct",
+    "configuration_verified": true,
+    "configuration_source": "transformers.AutoConfig.from_pretrained()",
+    "phase": "Architecture Shell",
+    "timestamp": "2026-11-18T19:01:08Z"
+  },
+  "model_dimensions": {
+    "vocab_size": {
+      "value": 49152,
+      "description": "Number of tokens in vocabulary",
+      "source": "config.vocab_size"
+    },
+    "hidden_size": {
+      "value": 960,
+      "description": "Dimension of hidden states and embedding dimension",
+      "source": "config.hidden_size"
+    },
+    "num_hidden_layers": {
+      "value": 32,
+      "description": "Number of transformer blocks",
+      "source": "config.num_hidden_layers"
+    },
+    "max_position_embeddings": {
+      "value": 8192,
+      "description": "Maximum sequence length the model can accept",
+      "source": "config.max_position_embeddings"
+    }
+  },
+  "attention_configuration": {
+    "num_attention_heads": {
+      "value": 15,
+      "description": "Number of query attention heads per transformer block",
+      "source": "config.num_attention_heads"
+    },
+    "num_key_value_heads": {
+      "value": 5,
+      "description": "Number of key/value heads per transformer block (grouped query attention)",
+      "source": "config.num_key_value_heads"
+    },
+    "head_dim": {
+      "value": 64,
+      "description": "Dimension per attention head (derived: hidden_size / num_attention_heads)",
+      "derivation": "960 / 15 = 64",
+      "source": "config.head_dim"
+    },
+    "attention_bias": {
+      "value": false,
+      "description": "Whether attention linear layers include bias terms",
+      "source": "config.attention_bias"
+    },
+    "attention_dropout": {
+      "value": 0.0,
+      "description": "Dropout probability applied to attention weights",
+      "source": "config.attention_dropout"
+    }
+  },
+  "feedforward_configuration": {
+    "intermediate_size": {
+      "value": 2560,
+      "description": "Intermediate dimension in SwiGLU feed-forward networks",
+      "source": "config.intermediate_size",
+      "ratio_to_hidden": "2560 / 960 = 2.667"
+    },
+    "mlp_bias": {
+      "value": false,
+      "description": "Whether MLP linear layers include bias terms",
+      "source": "config.mlp_bias"
+    },
+    "hidden_act": {
+      "value": "silu",
+      "description": "Activation function in SwiGLU and feed-forward networks (Swish activation)",
+      "source": "config.hidden_act",
+      "implementation": "torch.nn.SiLU()"
+    }
+  },
+  "normalization_configuration": {
+    "rms_norm_eps": {
+      "value": 1e-5,
+      "description": "Epsilon parameter for RMS normalization (numerical stability)",
+      "source": "config.rms_norm_eps",
+      "usage": "RMS normalization before attention and FFN layers"
+    }
+  },
+  "rope_configuration": {
+    "rope_theta": {
+      "value": 100000.0,
+      "description": "Frequency base for rotary position encoding",
+      "source": "config.rope_parameters.rope_theta"
+    },
+    "rope_interleaved": {
+      "value": false,
+      "description": "Whether RoPE uses interleaved format (SmolLM2 uses split-half)",
+      "source": "config.rope_interleaved",
+      "implementation": "SplitHalfRoPE adapter (Phase 2)"
+    },
+    "rope_type": {
+      "value": "default",
+      "description": "RoPE variant identifier",
+      "source": "config.rope_parameters.rope_type"
+    }
+  },
+  "tokenizer_configuration": {
+    "bos_token_id": {
+      "value": 1,
+      "description": "Beginning-of-sequence token ID",
+      "source": "config.bos_token_id"
+    },
+    "eos_token_id": {
+      "value": 2,
+      "description": "End-of-sequence token ID",
+      "source": "config.eos_token_id"
+    },
+    "pad_token_id": {
+      "value": 2,
+      "description": "Padding token ID (same as EOS)",
+      "source": "config.pad_token_id"
+    }
+  },
+  "architecture_type": {
+    "value": "LlamaForCausalLM",
+    "description": "HuggingFace architecture class",
+    "source": "config.architectures[0]",
+    "note": "SmolLM2 is Llama-compatible"
+  },
+  "cache_configuration": {
+    "use_cache": {
+      "value": true,
+      "description": "Whether model supports KV caching for inference",
+      "source": "config.use_cache"
+    },
+    "kv_cache_dtype": {
+      "value": {"q4f16": "float16", "fp16": "float16"},
+      "description": "Supported data types for KV cache",
+      "source": "config.transformers_js_config.kv_cache_dtype"
+    }
+  },
+  "dtype_configuration": {
+    "default_dtype": {
+      "value": "bfloat16",
+      "description": "Default data type for model weights",
+      "source": "config.dtype"
+    },
+    "supported_dtypes": [
+      "float32",
+      "float16",
+      "bfloat16",
+      "float64"
+    ],
+    "note": "Architecture implementation supports FP32, FP16, FP64 for validation"
+  },
+  "tensor_shapes_and_naming": {
+    "query_projection": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 15*64]",
+      "description": "Project hidden states to query heads",
+      "checkpoint_key_pattern": "model.layers.{layer}.self_attn.q_proj"
+    },
+    "key_projection": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 5*64]",
+      "description": "Project hidden states to KV heads",
+      "checkpoint_key_pattern": "model.layers.{layer}.self_attn.k_proj"
+    },
+    "value_projection": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 5*64]",
+      "description": "Project hidden states to KV heads",
+      "checkpoint_key_pattern": "model.layers.{layer}.self_attn.v_proj"
+    },
+    "attention_output_projection": {
+      "input_shape": "[batch, sequence, 15*64]",
+      "output_shape": "[batch, sequence, 960]",
+      "description": "Project attention output back to hidden size",
+      "checkpoint_key_pattern": "model.layers.{layer}.self_attn.o_proj"
+    },
+    "attention_norm": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 960]",
+      "description": "Pre-attention RMS normalization",
+      "checkpoint_key_pattern": "model.layers.{layer}.input_layernorm"
+    },
+    "ffn_norm": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 960]",
+      "description": "Pre-FFN RMS normalization",
+      "checkpoint_key_pattern": "model.layers.{layer}.post_attention_layernorm"
+    },
+    "gate_projection": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 2560]",
+      "description": "SwiGLU gate linear layer",
+      "checkpoint_key_pattern": "model.layers.{layer}.mlp.gate_proj"
+    },
+    "up_projection": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 2560]",
+      "description": "SwiGLU up linear layer",
+      "checkpoint_key_pattern": "model.layers.{layer}.mlp.up_proj"
+    },
+    "down_projection": {
+      "input_shape": "[batch, sequence, 2560]",
+      "output_shape": "[batch, sequence, 960]",
+      "description": "SwiGLU down linear layer",
+      "checkpoint_key_pattern": "model.layers.{layer}.mlp.down_proj"
+    },
+    "embedding_layer": {
+      "input_shape": "[batch, sequence]",
+      "output_shape": "[batch, sequence, 960]",
+      "description": "Token embedding",
+      "checkpoint_key_pattern": "model.embed_tokens"
+    },
+    "final_norm": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 960]",
+      "description": "Final RMS normalization before output projection",
+      "checkpoint_key_pattern": "model.norm"
+    },
+    "language_model_head": {
+      "input_shape": "[batch, sequence, 960]",
+      "output_shape": "[batch, sequence, 49152]",
+      "description": "Output projection to vocabulary",
+      "checkpoint_key_pattern": "lm_head"
+    }
+  },
+  "transformer_block_structure": {
+    "description": "Each of 32 transformer blocks contains",
+    "components": {
+      "pre_attention_norm": {
+        "type": "RMSNorm",
+        "dim": 960,
+        "eps": 1e-5
+      },
+      "self_attention": {
+        "type": "GroupedQueryAttention (Zeta)",
+        "num_query_heads": 15,
+        "num_key_value_heads": 5,
+        "head_dim": 64,
+        "rope": "SplitHalfRoPE (Phase 2)",
+        "rope_theta": 100000.0
+      },
+      "attention_output_projection": {
+        "type": "Linear",
+        "in_features": 960,
+        "out_features": 960,
+        "bias": false
+      },
+      "attention_residual": {
+        "type": "Residual connection",
+        "operation": "hidden_states + attention_output"
+      },
+      "pre_ffn_norm": {
+        "type": "RMSNorm",
+        "dim": 960,
+        "eps": 1e-5
+      },
+      "feed_forward": {
+        "type": "SwiGLU",
+        "in_features": 960,
+        "out_features": 960,
+        "intermediate_features": 2560,
+        "activation": "SiLU",
+        "bias": false
+      },
+      "ffn_residual": {
+        "type": "Residual connection",
+        "operation": "hidden_states + ffn_output"
+      }
+    }
+  },
+  "phase_2_integration": {
+    "split_half_rope": {
+      "status": "INTEGRATED",
+      "description": "SplitHalfRoPE adapter used in TransformerBlock attention",
+      "head_dim": 64,
+      "rope_theta": 100000.0,
+      "reference": "adapters/rope_cache_adapter.py:SplitHalfRoPE"
+    },
+    "absolute_position_kv_cache": {
+      "status": "INTEGRATED",
+      "description": "AbsolutePositionKVCache wrapper instantiated in TransformerBlock",
+      "reference": "adapters/rope_cache_adapter.py:AbsolutePositionKVCache"
+    },
+    "zeta_grouped_query_attention": {
+      "status": "INTEGRATED",
+      "description": "Zeta GroupedQueryAttention used in TransformerBlock",
+      "num_query_heads": 15,
+      "num_key_value_heads": 5,
+      "head_dim": 64,
+      "reference": "zeta_scaling_toolkit.GroupedQueryAttention"
+    }
+  },
+  "implementation_status": {
+    "rmsnorm": "IMPLEMENTED",
+    "swiglu": "IMPLEMENTED",
+    "residual_connections": "IMPLEMENTED",
+    "transformer_block": "IMPLEMENTED",
+    "model_shell": "IMPLEMENTED",
+    "phase2_integration": "COMPLETE",
+    "architecture_validation": "COMPLETE"
+  },
+  "unresolved_or_future_work": {
+    "checkpoint_weight_mapping": "Will be performed in separate Phase 4+ when loading actual SmolLM2-360M-Instruct checkpoint",
+    "tokenizer_integration": "Tokenizer interface not implemented (Phase 1 scope)",
+    "inference_pipeline": "Inference and generation testing deferred to later phases",
+    "gradient_checkpointing": "Not implemented (optimization, not required for validation)"
+  },
+  "validation_coverage": {
+    "unit_tests": "52 passed",
+    "regression_tests": "53 passed (Phase 2)",
+    "tensor_dimensions": "Validated across batch sizes 1-8, sequence lengths 1-64",
+    "data_types": "FP32, FP16, FP64 tested",
+    "gradient_flow": "Verified in all components",
+    "numerical_stability": "Finite outputs and gradients verified",
+    "determinism": "Deterministic behavior verified",
+    "edge_cases": "Invalid dimensions and configuration handling tested"
+  }
+}

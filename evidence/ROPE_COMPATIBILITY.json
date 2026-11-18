@@ -1,0 +1,70 @@
+{
+  "phase": "Phase 2 - Split-Half RoPE Compatibility",
+  "status": "PASS",
+  "implementation": "adapters/rope_cache_adapter.py:SplitHalfRoPE",
+  "parameters": {
+    "head_dim": 64,
+    "rope_theta": 100000.0,
+    "split_convention": "first_half_and_second_half_rotated_independently",
+    "frequency_base": "theta^(-2*i/d)"
+  },
+  "test_results": [
+    {
+      "config": {
+        "batch": 1,
+        "seq_q": 1,
+        "seq_k": 1,
+        "num_q_heads": 15,
+        "num_kv_heads": 5
+      },
+      "q_shape": "torch.Size([1, 15, 1, 64])",
+      "k_shape": "torch.Size([1, 5, 1, 64])",
+      "q_rot_shape": "torch.Size([1, 15, 1, 64])",
+      "k_rot_shape": "torch.Size([1, 5, 1, 64])",
+      "q_finite": true,
+      "k_finite": true
+    },
+    {
+      "config": {
+        "batch": 2,
+        "seq_q": 4,
+        "seq_k": 8,
+        "num_q_heads": 15,
+        "num_kv_heads": 5
+      },
+      "q_shape": "torch.Size([2, 15, 4, 64])",
+      "k_shape": "torch.Size([2, 5, 8, 64])",
+      "q_rot_shape": "torch.Size([2, 15, 4, 64])",
+      "k_rot_shape": "torch.Size([2, 5, 8, 64])",
+      "q_finite": true,
+      "k_finite": true
+    },
+    {
+      "config": {
+        "batch": 1,
+        "seq_q": 16,
+        "seq_k": 16,
+        "num_q_heads": 15,
+        "num_kv_heads": 5
+      },
+      "q_shape": "torch.Size([1, 15, 16, 64])",
+      "k_shape": "torch.Size([1, 5, 16, 64])",
+      "q_rot_shape": "torch.Size([1, 15, 16, 64])",
+      "k_rot_shape": "torch.Size([1, 5, 16, 64])",
+      "q_finite": true,
+      "k_finite": true
+    }
+  ],
+  "numerical_properties": {
+    "dtype_support": [
+      "float32",
+      "float16",
+      "float64"
+    ],
+    "gradient_support": true,
+    "deterministic": true,
+    "position_offset_support": true,
+    "discontiguous_positions_support": true
+  },
+  "recorded_at_utc": "2026-11-18T18:55:04.405069+00:00"
+}

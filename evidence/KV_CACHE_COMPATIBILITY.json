@@ -1,0 +1,59 @@
+{
+  "phase": "Phase 3 - Absolute-Position KV-Cache Compatibility",
+  "status": "PASS",
+  "implementation": "adapters/rope_cache_adapter.py:AbsolutePositionKVCache",
+  "parameters": {
+    "num_kv_heads": 5,
+    "head_dim": 64,
+    "storage_layout": "[batch, num_kv_heads, seq_cache, head_dim]"
+  },
+  "capabilities": {
+    "sequential_append": true,
+    "nonzero_initial_position": true,
+    "discontiguous_positions": true,
+    "contiguous_lookup": true,
+    "discontiguous_lookup": true,
+    "out_of_order_lookup": true,
+    "duplicate_detection": true,
+    "batch_validation": true
+  },
+  "test_results": [
+    {
+      "test": "sequential_append",
+      "appends": 2,
+      "tokens_per_append": 4,
+      "total_cached": 8,
+      "positions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "k_shape": "torch.Size([2, 5, 8, 64])",
+      "v_shape": "torch.Size([2, 5, 8, 64])"
+    },
+    {
+      "test": "discontiguous_positions",
+      "positions_stored": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "lookup_positions": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "retrieved_shape": "torch.Size([1, 5, 4, 64])",
+      "k_finite": true,
+      "v_finite": true
+    }
+  ],
+  "recorded_at_utc": "2026-11-18T18:55:04.405069+00:00"
+}

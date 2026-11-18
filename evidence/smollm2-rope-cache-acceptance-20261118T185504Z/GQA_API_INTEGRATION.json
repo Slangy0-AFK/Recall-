@@ -1,0 +1,65 @@
+{
+  "phase": "Phase 4 - Zeta GroupedQueryAttention API Integration",
+  "status": "PASS",
+  "implementation": "zeta_scaling_toolkit.GroupedQueryAttention",
+  "source_commit": "0a1446938a600eeb5c449a185a48b4350af8cf8e",
+  "source_location": "zeta_scaling_toolkit/gqa.py",
+  "api_parameters": {
+    "num_query_heads": 15,
+    "num_key_value_heads": 5,
+    "head_dim": 64,
+    "groups_per_key_value_head": 3
+  },
+  "scaling_factor": 0.125,
+  "dtype_support": [
+    "float32",
+    "float16",
+    "float64"
+  ],
+  "causal_mode": true,
+  "test_results": [
+    {
+      "config": {
+        "batch": 1,
+        "seq_q": 1,
+        "seq_k": 1
+      },
+      "q_shape": "torch.Size([1, 15, 1, 64])",
+      "k_shape": "torch.Size([1, 5, 1, 64])",
+      "v_shape": "torch.Size([1, 5, 1, 64])",
+      "output_shape": "torch.Size([1, 1, 960])",
+      "expected_output_shape": "[1, 1, 960]",
+      "output_finite": true,
+      "shape_match": true
+    },
+    {
+      "config": {
+        "batch": 2,
+        "seq_q": 4,
+        "seq_k": 8
+      },
+      "q_shape": "torch.Size([2, 15, 4, 64])",
+      "k_shape": "torch.Size([2, 5, 8, 64])",
+      "v_shape": "torch.Size([2, 5, 8, 64])",
+      "output_shape": "torch.Size([2, 4, 960])",
+      "expected_output_shape": "[2, 4, 960]",
+      "output_finite": true,
+      "shape_match": true
+    },
+    {
+      "config": {
+        "batch": 1,
+        "seq_q": 16,
+        "seq_k": 32
+      },
+      "q_shape": "torch.Size([1, 15, 16, 64])",
+      "k_shape": "torch.Size([1, 5, 32, 64])",
+      "v_shape": "torch.Size([1, 5, 32, 64])",
+      "output_shape": "torch.Size([1, 16, 960])",
+      "expected_output_shape": "[1, 16, 960]",
+      "output_finite": true,
+      "shape_match": true
+    }
+  ],
+  "recorded_at_utc": "2026-11-18T18:55:04.405069+00:00"
+}

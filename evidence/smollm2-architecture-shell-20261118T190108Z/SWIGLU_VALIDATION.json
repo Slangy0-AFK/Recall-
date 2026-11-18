@@ -1,0 +1,124 @@
+{
+  "component": "SwiGLU",
+  "implementation_file": "adapters/smollm2_architecture.py",
+  "class_name": "SwiGLU",
+  "validation_date": "2026-11-18T19:01:08Z",
+  "summary": {
+    "total_tests": 12,
+    "passed": 12,
+    "failed": 0,
+    "status": "PASS"
+  },
+  "tests": [
+    {
+      "name": "test_instantiation_default",
+      "status": "PASS",
+      "description": "Verify instantiation with default SiLU activation"
+    },
+    {
+      "name": "test_instantiation_custom_activation",
+      "status": "PASS",
+      "description": "Verify custom activation function support"
+    },
+    {
+      "name": "test_instantiation_no_bias",
+      "status": "PASS",
+      "description": "Verify bias=False configuration (SmolLM2 standard)"
+    },
+    {
+      "name": "test_instantiation_with_bias",
+      "status": "PASS",
+      "description": "Verify bias=True configuration when requested"
+    },
+    {
+      "name": "test_invalid_dimensions_zero",
+      "status": "PASS",
+      "description": "Reject zero or negative dimensions"
+    },
+    {
+      "name": "test_shape_preservation",
+      "status": "PASS",
+      "description": "Verify output shape [batch, seq, out_features]",
+      "batch_sizes_tested": [1, 2, 4, 8],
+      "sequence_lengths_tested": [1, 4, 16, 64]
+    },
+    {
+      "name": "test_dimension_mismatch",
+      "status": "PASS",
+      "description": "Reject inputs with wrong last dimension"
+    },
+    {
+      "name": "test_mathematical_structure",
+      "status": "PASS",
+      "description": "Verify SwiGLU formula: (SiLU(gate_proj) * up_proj) @ down_proj",
+      "tolerance": 1e-6
+    },
+    {
+      "name": "test_finite_outputs",
+      "status": "PASS",
+      "description": "All outputs are finite (no NaN or Inf)",
+      "trials": 10
+    },
+    {
+      "name": "test_finite_gradients",
+      "status": "PASS",
+      "description": "Gradient computation produces finite values"
+    },
+    {
+      "name": "test_deterministic_behavior",
+      "status": "PASS",
+      "description": "Same input produces same output"
+    },
+    {
+      "name": "test_no_input_mutation",
+      "status": "PASS",
+      "description": "Input tensor is not modified during forward pass"
+    }
+  ],
+  "configuration_smollm2": {
+    "in_features": 960,
+    "out_features": 960,
+    "intermediate_features": 2560,
+    "bias": false,
+    "activation": "SiLU",
+    "ratio": "2560 / 960 = 2.667"
+  },
+  "structure": {
+    "gate_projection": {
+      "input": 960,
+      "output": 2560,
+      "activation": "SiLU"
+    },
+    "up_projection": {
+      "input": 960,
+      "output": 2560,
+      "activation": "none"
+    },
+    "element_wise_multiply": {
+      "left": "SiLU(gate_proj(x))",
+      "right": "up_proj(x)",
+      "operation": "element_wise *"
+    },
+    "down_projection": {
+      "input": 2560,
+      "output": 960,
+      "activation": "none"
+    }
+  },
+  "formula_verification": {
+    "implemented_formula": "linear_down(silu(linear_gate(x)) * linear_up(x))",
+    "matches_official_spec": true,
+    "source": "SmolLM2 uses SwiGLU with SiLU activation",
+    "reference": "Shazeer (2020) - GLU Variants Improve Transformer"
+  },
+  "numerical_properties": {
+    "gradient_flow": "Verified through gate and up paths",
+    "activation_sparsity": "SiLU provides soft gating",
+    "numerical_stability": "No clipping or special handling needed"
+  },
+  "dtype_support": {
+    "float32": "PASS",
+    "float16": "PASS",
+    "float64": "PASS"
+  }
+}

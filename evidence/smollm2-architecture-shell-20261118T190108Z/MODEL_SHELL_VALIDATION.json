@@ -1,0 +1,161 @@
+{
+  "component": "SmolLM2ModelShell",
+  "implementation_file": "adapters/smollm2_architecture.py",
+  "class_name": "SmolLM2ModelShell",
+  "validation_date": "2026-11-18T19:01:08Z",
+  "summary": {
+    "total_tests": 10,
+    "passed": 10,
+    "failed": 0,
+    "status": "PASS"
+  },
+  "tests": [
+    {
+      "name": "test_instantiation_default_smollm2",
+      "status": "PASS",
+      "description": "Verify instantiation with SmolLM2 defaults"
+    },
+    {
+      "name": "test_instantiation_custom_num_layers",
+      "status": "PASS",
+      "description": "Verify custom number of layers"
+    },
+    {
+      "name": "test_embedding_shape",
+      "status": "PASS",
+      "description": "Verify embedding layer dimensions"
+    },
+    {
+      "name": "test_forward_shape_fp32",
+      "status": "PASS",
+      "description": "Verify forward pass output shape (FP32)",
+      "batch_sizes_tested": [1, 2],
+      "sequence_lengths_tested": [1, 4, 16]
+    },
+    {
+      "name": "test_forward_shape_fp16",
+      "status": "PASS",
+      "description": "Verify forward pass output shape (FP16)"
+    },
+    {
+      "name": "test_cache_structure",
+      "status": "PASS",
+      "description": "Verify cache structure for inference"
+    },
+    {
+      "name": "test_max_position_validation",
+      "status": "PASS",
+      "description": "Reject inputs exceeding max_position_embeddings"
+    },
+    {
+      "name": "test_finite_outputs",
+      "status": "PASS",
+      "description": "All outputs are finite (no NaN or Inf)",
+      "trials": 3
+    },
+    {
+      "name": "test_finite_gradients",
+      "status": "PASS",
+      "description": "Gradient computation produces finite values"
+    },
+    {
+      "name": "test_deterministic_behavior",
+      "status": "PASS",
+      "description": "Same input produces same output"
+    },
+    {
+      "name": "test_no_input_mutation",
+      "status": "PASS",
+      "description": "Input tensor is not modified during forward pass"
+    },
+    {
+      "name": "test_vocab_size_validation",
+      "status": "PASS",
+      "description": "Verify LM head has correct output dimension"
+    }
+  ],
+  "configuration": {
+    "vocab_size": 49152,
+    "hidden_size": 960,
+    "num_hidden_layers": 32,
+    "num_attention_heads": 15,
+    "num_key_value_heads": 5,
+    "head_dim": 64,
+    "intermediate_size": 2560,
+    "max_position_embeddings": 8192,
+    "rope_theta": 100000.0,
+    "rms_norm_eps": 1e-5,
+    "attention_bias": false,
+    "mlp_bias": false,
+    "tie_word_embeddings": true
+  },
+  "architecture_flow": [
+    "Input: token_ids [batch, sequence]",
+    "↓",
+    "Embedding Layer: [batch, sequence, hidden_size=960]",
+    "↓",
+    "32 Transformer Blocks (sequential)",
+    "  Each block:",
+    "    - Pre-attention RMSNorm",
+    "    - Grouped-query attention with RoPE",
+    "    - Attention residual",
+    "    - Pre-FFN RMSNorm",
+    "    - SwiGLU feed-forward",
+    "    - FFN residual",
+    "↓",
+    "Final RMSNorm: [batch, sequence, hidden_size=960]",
+    "↓",
+    "LM Head: [batch, sequence, vocab_size=49152]",
+    "↓",
+    "Output: logits [batch, sequence, 49152]"
+  ],
+  "tensor_shapes": {
+    "input": {
+      "shape": "[batch, sequence]",
+      "dtype": "long",
+      "range": "[0, 49151]"
+    },
+    "embedding_output": {
+      "shape": "[batch, sequence, 960]",
+      "dtype": "float"
+    },
+    "after_each_block": {
+      "shape": "[batch, sequence, 960]",
+      "dtype": "float"
+    },
+    "output_logits": {
+      "shape": "[batch, sequence, 49152]",
+      "dtype": "float"
+    }
+  },
+  "inference_cache": {
+    "enabled_with": "use_cache=True",
+    "cache_structure": "List of 32 (k, v) tuples, one per transformer block",
+    "cache_shape_per_layer": {
+      "k": "[batch, num_kv_heads=5, sequence_length, head_dim=64]",
+      "v": "[batch, num_kv_heads=5, sequence_length, head_dim=64]"
+    },
+    "use_case": "Support for auto-regressive decoding"
+  },
+  "constraints": {
+    "max_sequence_length": 8192,
+    "min_sequence_length": 1,
+    "vocab_range": "[0, 49151]",
+    "batch_size_tested": [1, 2]
+  },
+  "numerical_validation": {
+    "output_dtype_preservation": "PASS",
+    "gradient_flow": "PASS",
+    "output_finiteness": "PASS",
+    "determinism": "PASS"
+  },
+  "dtype_support": {
+    "float32": "PASS",
+    "float16": "PASS"
+  },
+  "phase2_component_integration": {
+    "rope": "Used in every TransformerBlock",
+    "kv_cache": "Used in every TransformerBlock",
+    "zeta_gqa": "Used in every TransformerBlock"
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "component": "TransformerBlock",
+  "implementation_file": "adapters/smollm2_architecture.py",
+  "class_name": "TransformerBlock",
+  "validation_date": "2026-11-18T19:01:08Z",
+  "summary": {
+    "total_tests": 10,
+    "passed": 10,
+    "failed": 0,
+    "status": "PASS"
+  },
+  "tests": [
+    {
+      "name": "test_instantiation_default_smollm2",
+      "status": "PASS",
+      "description": "Verify instantiation with SmolLM2 defaults"
+    },
+    {
+      "name": "test_dimension_validation",
+      "status": "PASS",
+      "description": "Verify hidden_size == num_heads * head_dim constraint"
+    },
+    {
+      "name": "test_forward_shape_fp32",
+      "status": "PASS",
+      "description": "Verify forward pass output shape preservation (FP32)",
+      "batch_sizes_tested": [1, 2, 4],
+      "sequence_lengths_tested": [1, 4, 16, 64]
+    },
+    {
+      "name": "test_forward_shape_fp16",
+      "status": "PASS",
+      "description": "Verify forward pass output shape preservation (FP16)",
+      "batch_sizes_tested": [1, 2],
+      "sequence_lengths_tested": [1, 4, 16]
+    },
+    {
+      "name": "test_cache_shape",
+      "status": "PASS",
+      "description": "Verify cache structure for inference"
+    },
+    {
+      "name": "test_dimension_mismatch",
+      "status": "PASS",
+      "description": "Reject inputs with wrong hidden dimension"
+    },
+    {
+      "name": "test_finite_outputs",
+      "status": "PASS",
+      "description": "All outputs are finite (no NaN or Inf)",
+      "trials": 5
+    },
+    {
+      "name": "test_finite_gradients",
+      "status": "PASS",
+      "description": "Gradient computation produces finite values"
+    },
+    {
+      "name": "test_deterministic_behavior",
+      "status": "PASS",
+      "description": "Same input produces same output"
+    },
+    {
+      "name": "test_no_input_mutation",
+      "status": "PASS",
+      "description": "Input tensor is not modified during forward pass"
+    }
+  ],
+  "configuration": {
+    "hidden_size": 960,
+    "num_attention_heads": 15,
+    "num_key_value_heads": 5,
+    "head_dim": 64,
+    "intermediate_size": 2560,
+    "rope_theta": 100000.0,
+    "rms_norm_eps": 1e-5,
+    "attention_bias": false,
+    "mlp_bias": false
+  },
+  "architecture_components": {
+    "pre_attention_norm": {
+      "type": "RMSNorm",
+      "dim": 960,
+      "eps": 1e-5
+    },
+    "attention": {
+      "query_projection": {
+        "in": 960,
+        "out": "15 * 64"
+      },
+      "key_projection": {
+        "in": 960,
+        "out": "5 * 64"
+      },
+      "value_projection": {
+        "in": 960,
+        "out": "5 * 64"
+      },
+      "grouped_query_attention": {
+        "implementation": "Zeta GroupedQueryAttention",
+        "num_query_heads": 15,
+        "num_key_value_heads": 5,
+        "head_dim": 64
+      },
+      "rope": {
+        "implementation": "SplitHalfRoPE (Phase 2)",
+        "head_dim": 64,
+        "rope_theta": 100000.0
+      },
+      "kv_cache": {
+        "implementation": "AbsolutePositionKVCache (Phase 2)"
+      },
+      "output_projection": {
+        "in": "15 * 64",
+        "out": 960
+      }
+    },
+    "attention_residual": {
+      "type": "Residual connection",
+      "operation": "hidden_states + attention_output"
+    },
+    "pre_ffn_norm": {
+      "type": "RMSNorm",
+      "dim": 960,
+      "eps": 1e-5
+    },
+    "feed_forward": {
+      "type": "SwiGLU",
+      "in_features": 960,
+      "out_features": 960,
+      "intermediate_features": 2560,
+      "activation": "SiLU"
+    },
+    "ffn_residual": {
+      "type": "Residual connection",
+      "operation": "hidden_states + ffn_output"
+    }
+  },
+  "phase2_integration": {
+    "split_half_rope": {
+      "status": "INTEGRATED",
+      "component": "attention"
+    },
+    "absolute_position_kv_cache": {
+      "status": "INTEGRATED",
+      "component": "attention"
+    },
+    "zeta_gqa": {
+      "status": "INTEGRATED",
+      "component": "attention"
+    }
+  },
+  "forward_pass_flow": [
+    "1. Normalize hidden_states with RMSNorm",
+    "2. Project to Q, K, V",
+    "3. Apply SplitHalfRoPE position encoding",
+    "4. Apply Zeta GroupedQueryAttention (is_causal=True)",
+    "5. Project attention output back to hidden_size",
+    "6. Residual: hidden_states = hidden_states + attn_output",
+    "7. Normalize with RMSNorm",
+    "8. Apply SwiGLU feed-forward",
+    "9. Residual: output = hidden_states + ffn_output",
+    "10. Return output and optional cache"
+  ],
+  "cache_behavior": {
+    "cache_shape": "[batch, num_kv_heads=5, sequence_length, head_dim=64]",
+    "use_cache_true": "Returns (output, cache) where cache = (k, v)",
+    "use_cache_false": "Returns (output, None)"
+  },
+  "numerical_validation": {
+    "gradient_flow": "Verified through all components",
+    "gradient_finiteness": "All gradients finite",
+    "output_finiteness": "All outputs finite",
+    "determinism": "Deterministic computation"
+  },
+  "dtype_support": {
+    "float32": "PASS",
+    "float16": "PASS"
+  }
+}
